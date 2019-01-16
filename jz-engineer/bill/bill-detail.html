@@ -1,0 +1,428 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link rel="stylesheet" href="../css/mui.min.css" />
+	<link rel="stylesheet" href="../css/app.css" />
+	<style>
+		.step .hasDel .action,
+		.step .hasDel .mui-icon {
+			background-color: #ff6363;
+		}
+		.step .hasDel .mui-icon:before {
+			content: '\e460';
+		}
+		.step .hasDel .bottom-arrow {
+			border-color: #ff6363 transparent transparent transparent;
+		}
+		.engineerBtn .btn-small{
+			font-size: 12px;
+		}
+		.mui-preview-image.mui-fullscreen {
+			position: fixed;
+			z-index: 20;
+			background-color: #000;
+		}
+		.mui-preview-header,
+		.mui-preview-footer {
+			position: absolute;
+			width: 100%;
+			left: 0;
+			z-index: 10;
+		}
+		.mui-preview-header {
+			height: 44px;
+			top: 0;
+		}
+		.mui-preview-footer {
+			height: 50px;
+			bottom: 0px;
+		}
+		.mui-preview-header .mui-preview-indicator {
+			display: block;
+			line-height: 25px;
+			color: #fff;
+			text-align: center;
+			margin: 15px auto 4;
+			width: 70px;
+			background-color: rgba(0, 0, 0, 0.4);
+			border-radius: 12px;
+			font-size: 16px;
+		}
+		.mui-preview-image {
+			display: none;
+			-webkit-animation-duration: 0.5s;
+			animation-duration: 0.5s;
+			-webkit-animation-fill-mode: both;
+			animation-fill-mode: both;
+		}
+		.mui-preview-image.mui-preview-in {
+			-webkit-animation-name: fadeIn;
+			animation-name: fadeIn;
+		}
+		.mui-preview-image.mui-preview-out {
+			background: none;
+			-webkit-animation-name: fadeOut;
+			animation-name: fadeOut;
+		}
+		.mui-preview-image.mui-preview-out .mui-preview-header,
+		.mui-preview-image.mui-preview-out .mui-preview-footer {
+			display: none;
+		}
+		.mui-zoom-scroller {
+			position: absolute;
+			display: -webkit-box;
+			display: -webkit-flex;
+			display: flex;
+			-webkit-box-align: center;
+			-webkit-align-items: center;
+			align-items: center;
+			-webkit-box-pack: center;
+			-webkit-justify-content: center;
+			justify-content: center;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			top: 0;
+			width: 100%;
+			height: 100%;
+			margin: 0;
+			-webkit-backface-visibility: hidden;
+		}
+		.mui-zoom {
+			-webkit-transform-style: preserve-3d;
+			transform-style: preserve-3d;
+		}
+		.mui-slider .mui-slider-group .mui-slider-item img {
+			width: auto;
+			height: auto;
+			max-width: 100%;
+			max-height: 100%;
+		}
+		.mui-android-4-1 .mui-slider .mui-slider-group .mui-slider-item img {
+			width: 100%;
+		}
+		.mui-android-4-1 .mui-slider.mui-preview-image .mui-slider-group .mui-slider-item {
+			display: inline-table;
+		}
+		.mui-android-4-1 .mui-slider.mui-preview-image .mui-zoom-scroller img {
+			display: table-cell;
+			vertical-align: middle;
+		}
+		.mui-preview-loading {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			top: 0;
+			left: 0;
+			display: none;
+		}
+		.mui-preview-loading.mui-active {
+			display: block;
+		}
+		.mui-preview-loading .mui-spinner-white {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			margin-left: -25px;
+			margin-top: -25px;
+			height: 50px;
+			width: 50px;
+		}
+		.mui-preview-image img.mui-transitioning {
+			-webkit-transition: -webkit-transform 0.5s ease, opacity 0.5s ease;
+			transition: transform 0.5s ease, opacity 0.5s ease;
+		}
+		@-webkit-keyframes fadeIn {
+			0% {
+				opacity: 0;
+			}
+			100% {
+				opacity: 1;
+			}
+		}
+		@keyframes fadeIn {
+			0% {
+				opacity: 0;
+			}
+			100% {
+				opacity: 1;
+			}
+		}
+		@-webkit-keyframes fadeOut {
+			0% {
+				opacity: 1;
+			}
+			100% {
+				opacity: 0;
+			}
+		}
+		@keyframes fadeOut {
+			0% {
+				opacity: 1;
+			}
+			100% {
+				opacity: 0;
+			}
+		}
+	</style>
+</head>
+
+<body>
+	<header class="mui-bar mui-bar-nav">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"><span class="font14">返回</span></a>
+		<h1 class="mui-title">订单详情</h1>
+	</header>
+	<div id="myapp" class="mui-content" v-cloak>
+		<div class="mui-card">
+			<ul class="step mui-clearfix">
+				<li :class="activeIndex >= 0? 'active':''">
+					<span class="mui-icon mui-icon-checkmarkempty"></span>
+					<p class="mui-text-center color333">{{flowData[0]}}</p>
+					<div class="action" v-if="activeIndex == 0">
+						{{flowData[0]}}
+					</div>
+					<div class="bottom-arrow" v-if="activeIndex == 0"></div>
+				</li>
+				<li class="step-line"></li>
+				<li :class="activeIndex >= 1? 'active':''">
+					<span class="mui-icon mui-icon-checkmarkempty"></span>
+					<p class="mui-text-center color333">{{flowData[1]}}</p>
+					<div class="action" v-if="activeIndex == 1">
+						{{flowData[1]}}
+					</div>
+					<div class="bottom-arrow" v-if="activeIndex == 1"></div>
+				</li>
+				<li class="step-line"></li>
+				<li :class="activeIndex >= 2? 'active':''">
+					<span class="mui-icon mui-icon-checkmarkempty"></span>
+					<p class="mui-text-center color333">{{flowData[2]}}</p>
+					<div class="action" v-if="activeIndex == 2">
+						{{flowData[2]}}
+					</div>
+					<div class="bottom-arrow" v-if="activeIndex == 2"></div>
+				</li>
+				<li class="step-line"></li>
+				<li class="four" :class="[activeIndex >= 3? 'active':'',flowData[3] == '已取消'?'hasDel':'']">
+					<span class="mui-icon mui-icon-checkmarkempty"></span>
+					<p class="mui-text-center color333">{{flowData[3]}}</p>
+					<div class="action" v-if="activeIndex == 3">
+						{{flowData[3]}}
+					</div>
+					<div class="bottom-arrow" v-if="activeIndex == 3"></div>
+				</li>
+			</ul>
+		</div>
+		<div class="mui-card">
+			<div class="mui-card-content mui-padding deMargin">
+				<h4 class="mui-padding font14 color333 bold">用户信息</h4>
+				<hr class="hr-border" />
+				<form class="mui-input-group no-border-before no-border-after billDetail">
+					<div class="mui-input-row height-auto">
+						<label>联系人</label>
+						<p>
+							{{displayData.contact_name}}
+							<span class="mui-pull-right" @click="call(displayData.mobile)">{{displayData.mobile}}</span>
+							<span class="mui-pull-right mui-icon iconfont icon-dianhua purple font20" style="margin-top: -2px;"></span>
+						</p>
+					</div>
+					<div class="mui-input-row height-auto">
+						<label>地址</label>
+						<p>{{displayData.full_address}}</p>
+					</div>
+					<div class="mui-input-row height-auto">
+						<label>时间</label>
+						<p>{{displayData.service_time}}</p>
+					</div>
+					<div class="mui-input-row height-auto">
+						<label>备注</label>
+						<p>{{displayData.user_remark}}</p>
+					</div>
+				</form>
+				<ul class="image-list mui-clearfix margin0 margin-top-10">
+					<li v-for="item in displayData.user_imgs">
+						<img :src="item" data-preview-src="" data-preview-group="1" />
+					</li>
+				</ul>
+			</div>
+			<div class="padding-left-right">
+				<div class="mui-card-content">
+					<div class="mui-padding deMargin">
+						<span class="font14 bold color333">服务信息</span>
+					</div>
+				</div>
+				<div class="mui-card-footer padding0 color333">
+					<span>
+						{{displayData.service_name}}
+					</span>
+					<p class="mui-text-right font12">
+						<span class="color333 font14">¥{{Number(displayData.unit_price).toFixed(2)}}</span>
+						<br />
+						x{{displayData.count}}
+					</p>
+				</div>
+				<div class="mui-card-footer padding0 color333">
+					<span>
+						服务金额(总价)
+					</span>
+					<span class="red font16">
+						¥{{displayData.amount}}
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="mui-card">
+			<h4 class="mui-padding font14 color333 bold">用户信息</h4>
+			<hr class="hr-border" />
+			<form class="mui-input-group no-border-before mui-padding deMargin no-border-after billDetail margin-bottom-10">
+				<div class="mui-input-row height-auto">
+					<label>订单编号</label>
+					<p>{{displayData.number}}</p>
+				</div>
+				<div class="mui-input-row height-auto">
+					<label>订单来源</label>
+					<p>
+						{{displayData.store_name}}
+						<span class="mui-pull-right purple" @click="call(displayData.store_phone)">联系商家</span>
+						<span class="mui-pull-right mui-icon iconfont icon-xinxi purple font20" style="margin-top: -2px;"></span>
+					</p>
+				</div>
+				<div class="mui-input-row height-auto">
+					<label>商家电话</label>
+					<p>{{displayData.store_phone}}</p>
+				</div>
+				<div class="mui-input-row height-auto">
+					<label>支付状态</label>
+					<p>{{displayData.pay_type_text}}</p>
+				</div>
+				<div class="mui-input-row height-auto">
+					<label>下单时间</label>
+					<p>{{displayData.create_time}}</p>
+				</div>
+			</form>
+		</div>
+		<div class="mui-content-padded margin-top-20 margin-bottom-20 mui-text-right engineerBtn">
+			<button class="mui-btn mui-btn-purple buttom-button btn-small" v-if="displayData.canDepart || displayData.canArrive" id="goNavigation">查看线路</button>
+			<button class="mui-btn mui-btn-warning buttom-button btn-small" v-if="displayData.canDepart" id="depart">确认出发</button>
+			<button class="mui-btn mui-btn-warning buttom-button btn-small" v-if="displayData.canArrive" id="arrive">确认到达</button>
+			<button class="mui-btn mui-btn-warning buttom-button btn-small" v-if="displayData.canStartService" id="startService">开始服务</button>
+			<button class="mui-btn mui-btn-warning buttom-button btn-small" v-if="(displayData.canPay || displayData.canFinishService || displayData.status == 10) && displayData.status_text != '已取消'" id="goService">确认完成</button>
+			<button class="mui-btn mui-btn-purple buttom-button mui-btn-block mui-padding" v-if="displayData.canPayDetail" id="goService2">去补差价</button>
+		</div>
+	</div>
+<script type="text/javascript" src="../js/mui.min.js"></script>
+<script type="text/javascript" src="../js/vue.min.js" ></script>
+<script type="text/javascript" src="../js/jquery-3.3.1.min.js" ></script>
+<script type="text/javascript" src="../js/app.js" ></script>
+<script type="text/javascript" src="../js/mui.zoom.js" ></script>
+<script type="text/javascript" src="../js/mui.previewimage.js" ></script>
+<script type="text/javascript">
+	mui.init();
+	mui.plusReady(function (){
+		document.addEventListener('back', function(event) {
+			mui.back();
+		});
+		document.addEventListener('get-detail', function(event) {
+			getDetail();
+		});
+		var heard = plus.webview.currentWebview();
+		var vm = new Vue({
+			el: '#myapp',
+			data: {
+				displayData: "",
+				activeIndex: -1,
+				flowData: [ "待出发", "待到达","待服务","待补差价"]
+			},
+			methods: {
+				call: function(_number) {
+					plus.device.dial(_number, true);
+				}
+			}
+		});
+		getDetail();
+		vm.$nextTick(function(){
+			mui.previewImage();
+    });
+		function getDetail() {
+			doAjax("/provider/order/info",{_token: UserInfo.data._token,order_id: heard.billId},function(_data) {
+//			console.log(JSON.stringify(_data));
+				vm.displayData = _data;
+				vm.displayData.amount = Number(vm.displayData.amount).toFixed(2);
+				switch(vm.displayData.status){
+					case 10:
+						vm.activeIndex = 3;
+						vm.flowData[3] = vm.displayData.status_text;
+						break;
+					case 20:
+						vm.activeIndex = 0;
+						vm.flowData[0] = vm.displayData.status_text;
+						break;
+					case 30:
+						vm.activeIndex = 0;
+						vm.flowData[0] = vm.displayData.status_text;
+						break;
+					case 40:
+						vm.activeIndex = 0;
+						vm.flowData[0] = vm.displayData.status_text;
+						break;
+					case 50:
+						vm.activeIndex = 0;
+						vm.flowData[0]= vm.displayData.status_text;
+						break;
+					case 60:
+						vm.activeIndex = 1;
+						vm.flowData[1]= vm.displayData.status_text;
+						break;
+					case 70:
+						vm.activeIndex = 2;
+						vm.flowData[2]= vm.displayData.status_text;
+						break;
+					case 80:
+						vm.activeIndex = 3;
+						vm.flowData[3] = vm.displayData.status_text;
+						break;
+					case 90:
+						vm.activeIndex = 3;
+						vm.flowData[3].showName = vm.displayData.status_text;
+						break;
+					case 100:
+						vm.activeIndex = 3;
+						vm.flowData[3] = vm.displayData.status_text;
+						break;
+					default:
+						break;
+				}
+			},"get")
+		}
+		mui(".mui-content-padded").on("tap","button",function () {
+			var thisId = $(this).attr("id");
+			if(thisId == "goService") {
+				openWindow("bill-service.html","bill-service",{
+					data: vm.displayData
+				})
+			} else if(thisId == "goService2") {
+				openWindow("bill-pay.html","bill-pay",{
+					data: vm.displayData
+				})
+			} else if(thisId == "goNavigation") {
+				plus.runtime.openURL("baidumap://map/direction?origin=我的位置&destination=" + vm.displayData.full_address,function(_data){
+					var mapApi = plus.os.name == "Android"? "androidamap":"iosamap";
+					plus.runtime.openURL(mapApi + "://navi?sourceApplication=appname&poiname=" + vm.displayData.full_address + "&lat=&lon=&dev=1&style=2",function(_data){
+						mui.toast("打开手机导航失败，请手动导航");
+					});
+				});
+			} else {
+				doAjax("/provider/order/" + thisId,{_token: UserInfo.data._token,id: vm.displayData.id,order_id: vm.displayData.id},function (_data,_msg) {
+					mui.fire(plus.webview.getWebviewById("tab-main.html"), 'get_detail', {});
+					mui.toast(_msg);
+					location.reload();
+				})
+			}
+    })
+	})
+</script>
+</body>
+
+</html>

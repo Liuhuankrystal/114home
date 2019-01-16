@@ -1,0 +1,107 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link rel="stylesheet" href="../css/mui.min.css" />
+	<link rel="stylesheet" href="../css/app.css" />
+	<style>
+		.mui-card {
+			margin: 39px 0px 65px;
+		}
+	</style>
+</head>
+
+<body>
+	<header class="mui-bar mui-bar-nav">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"><span class="font14">返回</span></a>
+		<h1 class="mui-title">人员列表</h1>
+	</header>
+	<div id="myapp" class="mui-content" v-cloak>
+		<div class="mui-slider" style="top: 44px;position: fixed;">
+		<div id="sliderSegmentedControl" class="mui-slider-indicator bg-white mui-segmented-control mui-segmented-control-inverted">
+			<a class="mui-control-item" :class="type == 1?'mui-active':''" data-code="1">已通过</a>
+			<a class="mui-control-item" :class="type == 2?'mui-active':''" data-code="2" >待审核</a>
+			<a class="mui-control-item" :class="type == 3?'mui-active':''" data-code="3" >已拒绝</a>
+		</div>
+	</div>
+		<div class="mui-card">
+			<ul class="mui-table-view engineer-list">
+				<li class="mui-table-view-cell mui-media" v-for="(item,index) in listData" :data-index="index">
+					<img class="mui-media-object mui-pull-left" :src="item.img_url || '../images/logo.png'">
+					<div class="mui-media-body">
+						<h5 class="color333">
+							{{item.name}}
+							<span class="engineer-state active">{{item.status_text}}</span>
+						</h5>
+						<p class='mui-ellipsis'>{{item.tel}}</p>
+					</div>
+				</li>
+				<li class="mui-text-center mui-padding" v-if="listData.length == 0">
+					没有工程师
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="mui-content-padded button-fix">
+		<button class="mui-btn mui-btn-success mui-btn-block buttom-button" id="add">
+			<i class="mui-icon mui-icon-plusempty"></i>
+			添加成员
+		</button>
+	</div>
+<script type="text/javascript" src="../js/mui.min.js"></script>
+<script type="text/javascript" src="../js/vue.min.js"></script>
+<script type="text/javascript" src="../js/jquery-3.3.1.min.js" ></script>
+<script type="text/javascript" src="../js/app.js" ></script>
+<script type="text/javascript">
+	mui.init();
+	mui.plusReady(function (){
+		document.addEventListener('get_detail', function(event) {
+			plus.webview.close("add-first");
+			plus.webview.close("add-second");
+			getList();
+		});
+		$(".mui-card").css("height",document.documentElement.clientHeight - 60 + 'px');
+		var vm = new Vue({
+			el: '#myapp',
+			data: {
+				type: "1",
+				listData: []
+			}
+		})
+		mui("#sliderSegmentedControl").on("tap", ".mui-control-item", function() {
+		if(vm.type == this.getAttribute("data-code")) return;
+			vm.type = this.getAttribute("data-code");
+			getList();
+		});
+		getList();
+		mui(".engineer-list").on("tap","li",function (){
+			var index = $(this).data("index");
+			if(!index && index != 0) return;
+			if(vm.type == 1) {
+				openWindow("engineer-detail.html","engineer-detail",{
+					data: vm.listData[index]
+				})
+			} else {
+				openWindow("engineer-reapply.html","engineer-reapply",{
+					data: vm.listData[index]
+				})
+			}
+		})
+		$("#add").on("tap",function () {
+			openWindow("add-first.html","add-first")
+		})
+		function getList() {
+			doAjax("/company/provider/list",{
+				_token: UserInfo.data._token,
+				type: vm.type
+			},function(_data) {
+				vm.listData = _data;
+			})
+		}
+	})
+</script>
+</body>
+
+</html>

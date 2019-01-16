@@ -1,0 +1,203 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <link rel="stylesheet" href="../css/mui.min.css"/>
+    <link rel="stylesheet" href="../css/app.css" />
+    <style>
+    	.mui-pull-top-tips {
+			position: absolute;
+			left: 50%;
+			margin-left: -15px;
+			z-index: 100;
+		}
+		.mui-pull-top-tips.mui-transitioning {
+			-webkit-transition-duration: 200ms;
+			transition-duration: 200ms;
+		}
+		.mui-pull-bottom-tips {
+			display: none;
+			text-align: center;
+			background-color: #efeff4;
+			font-size: 15px;
+			line-height: 40px;
+			color: #777;
+		}
+		.mui-pull-top-canvas {
+			overflow: hidden;
+			background-color: #fafafa;
+			border-radius: 100%;
+			box-shadow: 0 4px 10px #bbb;
+			width: 30px;
+			height: 30px;
+			margin: 0 auto;
+		}
+		.mui-pull-top-canvas canvas {
+			width: 30px;
+		}
+		.mui-scroll {
+			min-height: 500px;
+		}
+		</style>
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"><span class="font14">返回</span></a>
+		<h1 class="mui-title">服务列表</h1>
+	</header>
+	<div class="mui-content" id="myapp" style="padding-top: 44px;" v-cloak>
+		<div class="mui-slider mui-fullscreen">
+			<div id="sliderSegmentedControl" class="mui-slider-indicator margin-bottom-10 bg-white mui-segmented-control mui-segmented-control-inverted">
+				<a class="mui-control-item" :class="status=='1'?'mui-active':''" data-code="1">通过审核</a>
+				<a class="mui-control-item" :class="status=='2'?'mui-active':''" data-code="2" >待审核</a>
+				<a class="mui-control-item" :class="status=='3'?'mui-active':''" data-code="3" >已下架</a>
+				<a class="mui-control-item" :class="status=='4'?'mui-active':''" data-code="4" >未通过</a>
+			</div>
+			<div class="mui-slider-group">
+				<div class="mui-slider-item mui-control-content">
+					<div class="mui-scroll-wrapper">
+						<div class="mui-scroll">
+							<div class="mui-card mui-table-view mui-media mui-padding margin-top-10" v-for="(item,index) in listData" :data-index="index">
+								<img class="mui-media-object mui-pull-left" :src="item.img_url" width="50px" height="50px">
+								<div class="mui-media-body">
+									<h5 class="mui-ellipsis-2 color333 line-height-20">
+										{{item.name}}
+									</h5>
+									<h5 class="mui-ellipsis-2 red line-height-20 font16">
+										<small class="font12">¥</small>{{item.price}}
+										<span class="mui-pull-right color999 font12" v-if="item.audit_status != '1'">销量：{{item.sales}}</span>
+										<span class="mui-pull-right red font12" v-else>{{item.audit_status_text}}</span>
+									</h5>
+									<p class="mui-ellipsis-1 font12">
+										{{item.title}}
+									</p>
+								</div>
+							</div>
+							<div class="mui-card margin-top-10 mui-padding mui-text-center" v-show="listData.length == 0">
+								没有数据
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="mui-content-padded button-fix" style="z-index: 99;">
+		<button type="button" class="mui-btn mui-btn-success mui-btn-block buttom-button" id="add">
+			<i class="mui-icon mui-icon-plusempty"></i>
+			添加服务
+		</button>
+	</div>
+<script type="text/javascript" src="../js/mui.min.js"></script>
+<script type="text/javascript" src="../js/jquery-3.3.1.min.js" ></script>
+<script type="text/javascript" src="../js/mui.pullToRefresh.js" ></script>
+<script type="text/javascript" src="../js/mui.pullToRefresh.material.js" ></script>
+<script type="text/javascript" src="../js/vue.min.js" ></script>
+<script type="text/javascript" src="../js/app.js" ></script>
+<script type="text/javascript" charset="utf-8">
+	var vm = new Vue({
+		el: '#myapp',
+		data: {
+			status: "1",
+			page: 1,
+			listData: []
+		},
+		watch: {
+			status: function() {
+				this.listData = [];
+			}
+		}
+	});
+	document.addEventListener('get_detail', function(event) {
+		vm.page = event.detail.pageIndex;
+		vm.status = event.detail.status;
+		vm.page = 1;
+		getList();
+	});
+	(function($) {
+		//阻尼系数
+		var deceleration = mui.os.ios ? 0.003 : 0.0009;
+		$('.mui-scroll-wrapper').scroll({
+			bounce: false,
+			indicators: true, //是否显示滚动条
+			deceleration: deceleration
+		});
+		$.ready(function() {
+			//循环初始化所有下拉刷新，上拉加载。
+			$.each(document.querySelectorAll('.mui-slider-group .mui-scroll'), function(index, pullRefreshEl) {
+				$(pullRefreshEl).pullToRefresh({
+					down: {
+						callback: function() {
+							var self = this;
+							vm.page = 1;
+							getList();
+							self.endPullDownToRefresh();
+						}
+					},
+					up: {
+						contentrefresh: "正在加载...", //可选，正在加载状态时，上拉加载控件上显示的标题内容
+						contentnomore: '没有更多数据了', //可选，请求完毕若没有更多数据时显示的提醒内容；
+						callback: function() {
+							var self = this;
+							setTimeout(function() {
+								vm.page++;
+								getList();
+								self.endPullUpToRefresh();
+								//停止刷新
+//								if(pageIndex > (page)) {
+//									self.endPullUpToRefresh(true);
+//								}
+							}, 1500);
+						},
+					}
+				});
+			});
+		});
+	})(mui);
+	mui("#sliderSegmentedControl").on("tap", ".mui-control-item", function() {
+		vm.status = this.getAttribute("data-code");
+		vm.page = 1;
+		getList();
+	});
+	mui.plusReady(function() {
+		$(".mui-scroll").css("min-height",document.documentElement.clientHeight - 90 + 'px')
+		getList();
+		var heard = plus.webview.getWebviewById("list-content");
+		mui(".mui-scroll").on("tap", ".mui-card", function() {
+			var index = $(this).data("index");
+			if(index == undefined) return;
+			openWindow("add-service.html","add-service",{
+				"serviceId": vm.listData[index].id,
+				"canEdit": vm.status == 1 || vm.status == 2 ? true : false
+			})
+		});
+		$("#add").on("tap", function() {
+			openWindow("add-service.html","add-service",{
+				"isNew": true,
+			})
+		});
+	})
+	function getList() {
+		doAjax("/company/service/list",{
+			_token: UserInfo.data._token,
+			page_num: 15,
+			page: vm.page,
+			status: vm.status
+		},function (_data) {
+			if(vm.page == 1) {
+				vm.listData = _data;
+			} else {
+				if(!_data.length) {
+					mui.toast("没有更多数据了");
+				} else {
+					mui.toast("加载完成");
+				}
+				vm.listData = vm.listData.concat(_data);
+			}
+		},"get");
+	}
+</script>
+</body>
+</html>

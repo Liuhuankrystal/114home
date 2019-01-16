@@ -1,0 +1,216 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <link rel="stylesheet" href="css/mui.min.css"/>
+    <link rel="stylesheet" href="css/app.css" />
+    <style>
+    	.mui-pull-top-tips {
+			position: absolute;
+			left: 50%;
+			margin-left: -15px;
+			z-index: 100;
+		}
+		.mui-pull-top-tips.mui-transitioning {
+			-webkit-transition-duration: 200ms;
+			transition-duration: 200ms;
+		}
+		.mui-pull-bottom-tips {
+			display: none;
+			text-align: center;
+			background-color: #efeff4;
+			font-size: 15px;
+			line-height: 40px;
+			color: #777;
+		}
+		.mui-pull-top-canvas {
+			overflow: hidden;
+			background-color: #fafafa;
+			border-radius: 100%;
+			box-shadow: 0 4px 10px #bbb;
+			width: 30px;
+			height: 30px;
+			margin: 0 auto;
+		}
+		.mui-pull-top-canvas canvas {
+			width: 30px;
+		}
+		.mui-scroll {
+			min-height: 500px;
+		}
+		</style>
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav">
+		<h1 class="mui-title">订单</h1>
+	</header>
+	<div class="mui-content" id="myapp" style="padding-top: 44px;" v-cloak>
+		<div class="mui-slider mui-fullscreen">
+			<div id="sliderSegmentedControl" class="mui-slider-indicator margin-bottom-10 bg-white mui-segmented-control mui-segmented-control-inverted">
+				<a class="mui-control-item" :class="status == 4?'mui-active':''" data-code="4" >全部</a>
+				<a class="mui-control-item" :class="status == 1?'mui-active':''" data-code="1">待支付</a>
+				<a class="mui-control-item" :class="status == 2?'mui-active':''" data-code="2" >服务中</a>
+				<a class="mui-control-item" :class="status == 3?'mui-active':''" data-code="3" >已完成</a>
+			</div>
+			<div class="mui-slider-group">
+				<div class="mui-slider-item mui-control-content">
+					<div class="mui-scroll-wrapper">
+						<div class="mui-scroll">
+							<div class="mui-card mui-table-view mui-padding margin-top-10" v-for="(item,index) in listData" :data-index="index">
+								<div class="mui-row margin-bottom-10">
+									<div class="mui-col-sm-9 mui-col-xs-9">
+										<i class="mui-icon iconfont icon-shangpinguanli"></i>
+										{{item.store_name}}
+									</div>
+									<div class="mui-col-sm-3 mui-col-xs-3 mui-text-right red">
+										{{item.statueText}}
+									</div>
+								</div>
+								<div class="mui-media">
+									<img class="mui-media-object mui-pull-left" :src="item.img_url" width="40px" height="40px">
+									<div class="mui-media-body">
+										<div class="mui-row">
+											<div class="mui-col-sm-9 mui-col-xs-9">
+												<h5 class="mui-ellipsis-2 color333 line-height-20 min-height-35">
+													{{item.service_name}}
+												</h5>
+												<p class="mui-ellipsis-2 font12">
+													{{item.service_addr}}
+												</p>
+											</div>
+											<div class="mui-col-sm-3 mui-col-xs-3 mui-text-right color333">
+													¥{{Number(item.order_price).toFixed(2)}}
+												<p>x{{item.count}}</p>
+											</div>
+										</div>
+									</div>
+								</div>
+								<p class="font12 margin0 margin-top-10">
+									{{item.service_time}}
+								</p>
+								<p class="font12 color333  margin0 margin-top-10">
+									共{{item.count}}个服务  共计：¥{{(item.price * item.count).toFixed(2)}}
+								</p>
+								<div class="mui-text-right" v-if="item.status == 60 && item.statueText == '0'">
+									<button class="mui-btn mui-btn-purple buttom-button" id="goService">确认到达</button>
+								</div>
+								<div class="mui-text-right" v-if="item.status == 70 && item.is_cancel == '0'">
+									<button class="mui-btn mui-btn-purple buttom-button" id="goService">开始服务</button>
+								</div>
+							</div>
+							<div class="mui-card margin-top-10 mui-padding mui-text-center" v-show="listData.length == 0">
+								没有数据
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<script type="text/javascript" src="js/mui.min.js"></script>
+<script type="text/javascript" src="js/jquery-3.3.1.min.js" ></script>
+<script type="text/javascript" src="js/mui.pullToRefresh.js" ></script>
+<script type="text/javascript" src="js/mui.pullToRefresh.material.js" ></script>
+<script type="text/javascript" src="js/vue.min.js" ></script>
+<script type="text/javascript" src="js/app.js" ></script>
+<script type="text/javascript" charset="utf-8">
+	var vm = new Vue({
+		el: '#myapp',
+		data: {
+			status: "4",
+			page: 1,
+			listData: []
+		},
+		watch: {
+			status: function() {
+				this.listData = [];
+			}
+		}
+	});
+	document.addEventListener('get_detail', function(event) {
+//		console.log(JSON.stringify(event))
+		var status = event.detail.status;
+		vm.status = status || vm.status;
+		vm.page = 1;
+		getList();
+	});
+	(function($) {
+		//阻尼系数
+		var deceleration = mui.os.ios ? 0.003 : 0.0009;
+		$('.mui-scroll-wrapper').scroll({
+			bounce: false,
+			indicators: true, 
+			deceleration: deceleration
+		});
+		$.ready(function() {
+			$.each(document.querySelectorAll('.mui-slider-group .mui-scroll'), function(index, pullRefreshEl) {
+				$(pullRefreshEl).pullToRefresh({
+					down: {
+						callback: function() {
+							var self = this;
+							vm.page = 1;
+							getList();
+							self.endPullDownToRefresh();
+						}
+					},
+					up: {
+						contentrefresh: "正在加载...", 
+						contentnomore: '没有更多数据了',
+						callback: function() {
+							var self = this;
+							setTimeout(function() {
+								vm.page++;
+								getList();
+								self.endPullUpToRefresh();
+							}, 1500);
+						},
+					}
+				});
+			});
+		});
+	})(mui);
+	mui("#sliderSegmentedControl").on("tap", ".mui-control-item", function() {
+		if(vm.status == this.getAttribute("data-code")) return;
+		vm.status = this.getAttribute("data-code");
+		vm.page = 1;
+		vm.listData = [];
+		getList();
+	});
+	mui.plusReady(function() {
+		$(".mui-scroll").css("min-height",document.documentElement.clientHeight - 90 + 'px')
+		getList();
+		var heard = plus.webview.getWebviewById("list-content");
+		mui(".mui-scroll").on("tap", ".mui-card", function() {
+			var index = $(this).data("index");
+			if(index == undefined) return;
+			openWindow("bill/bill-detail.html","bill-detail",{
+				"billId": vm.listData[index].id,
+				"price_type": vm.listData[index].price_type
+			})
+		});
+	})
+	function getList() {
+		doAjax("/company/order/list",{
+			_token: UserInfo.data._token,
+			page_num: 15,
+			page: vm.page,
+			status: vm.status
+		},function (_data) {
+//			console.log(JSON.stringify(_data))
+			if(vm.page == 1) {
+		    vm.listData = _data;
+			} else {
+				if(!_data.length) {
+					mui.toast("没有更多数据了");
+				} else {
+					mui.toast("加载完成");
+				}
+				vm.listData = vm.listData.concat(_data);
+			}
+		},"get");
+	}
+</script>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link rel="stylesheet" href="../css/mui.min.css" />
+	<link rel="stylesheet" href="../css/mui.picker.min.css" />
+	<link rel="stylesheet" href="../css/mui.poppicker.css" />
+	<link rel="stylesheet" href="../css/app.css" />
+</head>
+
+<body>
+	<header class="mui-bar mui-bar-nav">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"><span class="font14">返回</span></a>
+		<h1 class="mui-title">接单范围</h1>
+	</header>
+	<div id="myapp" class="mui-content" v-cloak>
+		<div class="mui-card">
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell mui-collapse" v-for="(item,index) in listData">
+					<a class="mui-navigate-right color333">{{item.name}}</a>
+					<div class="mui-collapse-content">
+						<form class="mui-input-group">
+							<div class="mui-input-row" v-for="(item2,index2) in item.children">
+								<label>{{item2.name}}</label>
+								<div class="mui-switch mui-switch-blue" :class="item2.status == '1' ? '' : 'mui-active'" @click="toggleActive(index,index2)">
+									<span class="mui-text-right">接单</span>
+									<span class="mui-text-left">关闭</span>
+									<div class="mui-switch-handle"></div>
+								</div>
+							</div>
+						</form>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div class="mui-content-padded button-fix">
+			<button type="button" class="mui-btn mui-btn-royal mui-btn-block buttom-button" id="save">
+				<i class="mui-icon mui-icon-checkmarkempty"></i>
+					提交修改
+			</button>
+		</div>
+	</div>
+<script type="text/javascript" src="../js/mui.min.js"></script>
+<script type="text/javascript" src="../js/vue.min.js" ></script>
+<script type="text/javascript" src="../js/jquery-3.3.1.min.js" ></script>
+<script type="text/javascript" src="../js/vue.min.js" ></script>
+<script type="text/javascript" src="../js/app.js" ></script>
+<script type="text/javascript">
+	mui.plusReady(function (){
+		vm = new Vue({
+			el: '#myapp',
+			data: {
+				listData: "",
+			},
+			methods: {
+				toggleActive: function(_index,_index2) {
+					var obj = this.listData[_index].children[_index2];
+					obj.status = obj.status == 1 ? 2 : 1;
+				}
+			}
+		})
+		doAjax("/company/store/getStoreArea",{_token: UserInfo.data._token},function(_data) {
+			vm.listData = _data;
+		},"get")
+		$("#save").on("tap",function(){
+			var area_id = [];
+			for(var i=0;i<vm.listData.length;i++) {
+				if(vm.listData[i].children.length > 0) {
+					for(var j=0,childArry = vm.listData[i].children;j<childArry.length;j++) {
+						if(childArry[j].status == 1) {
+							area_id.push(childArry[j].id);
+						}
+					}
+				}
+			}
+			doAjax("/company/store/updateStoreArea",{_token: UserInfo.data._token,area_id: area_id.join()},function(_data,_msg) {
+				mui.toast(_msg);
+				mui.back();
+			})
+	  })
+	})
+</script>
+</body>
+
+</html>

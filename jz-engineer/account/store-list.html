@@ -1,0 +1,60 @@
+﻿<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link rel="stylesheet" href="../css/mui.min.css" />
+	<link rel="stylesheet" href="../css/app.css" />
+	<style>
+		.mui-col-sm-5.mui-col-xs-5 {
+			line-height: 55px;
+		}
+	</style>
+</head>
+
+<body>
+	<header class="mui-bar mui-bar-nav">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"><span class="font14">返回</span></a>
+		<h1 class="mui-title">服务店铺</h1>
+	</header>
+		<div class="mui-content bg-white mui-padding store-list" id="myapp" v-cloak>
+			<div class="mui-row" v-for="item in listData">
+				<div class="mui-col-sm-7 mui-col-xs-7">
+					<h5 class="color333">{{item.name}}</h5>
+					<p class="font12 color666">{{item.create_time}}</p>
+				</div>
+				<div class="mui-col-sm-5 mui-col-xs-5 font14 color666 mui-text-right" @click="call(item.phone)">
+					<span class="margin-right-5">{{item.contact_name}}</span>
+					<span class="mui-icon mui-icon-phone purple"></span>
+				</div>
+			</div>
+		</div>
+<script type="text/javascript" src="../js/mui.min.js"></script>
+<script type="text/javascript" src="../js/vue.min.js" ></script>
+<script type="text/javascript" src="../js/jquery-3.3.1.min.js" ></script>
+<script type="text/javascript" src="../js/app.js" ></script>
+<script type="text/javascript">
+	var count = 0,
+			pageIndex = 0;
+	var vm = new Vue({
+		el:'#myapp',
+		data: {
+			listData: []
+		},
+		methods: {
+			call:function(_phone) {
+				plus.device.dial(_phone, true);
+			}
+		}
+	})
+	mui.plusReady(function() {
+		doAjax("/provider/provider/storeList",{_token: UserInfo.data._token},function (_data) {
+//			console.log(JSON.stringify(_data))
+			vm.listData = _data;
+		},"get")
+	})
+</script>
+</body>
+
+</html>

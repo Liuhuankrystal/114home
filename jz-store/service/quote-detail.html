@@ -1,0 +1,182 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link rel="stylesheet" href="../css/mui.min.css" />
+	<link rel="stylesheet" href="../css/app.css" />
+</head>
+
+<body>
+	<header class="mui-bar mui-bar-nav">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"><span class="font14">返回</span></a>
+		<h1 class="mui-title" id="head-title">服务详情</h1>
+	</header>
+	<div id="myapp" class="mui-content" v-cloak>
+		<div class="mui-card">
+			<ul class="image-list mui-clearfix margin0">
+				<li v-for="item in displayData.imgs">
+					<img :src="item" />
+				</li>
+				<li v-for="item in displayData.banner_imgs">
+					<img :src="item" />
+				</li>
+			</ul>
+		</div>
+		<div class="mui-card">
+			<form class="mui-input-group no-border-before no-border-after">
+				<ul class="mui-table-view mui-table-view-chevron color666 store">
+					<li class="mui-table-view-cell">
+						<a class="color333">
+							<span>服务分类</span>
+							{{displayData.category_name}}
+						</a>
+					</li>
+					<li class="mui-table-view-cell">
+						<a class="color333">
+							<span>服务名称</span>
+							{{displayData.name}}
+						</a>
+					</li>
+					<li class="mui-table-view-cell">
+						<a class="color333">
+							<span>服务单位</span>
+							{{displayData.unit_name}}
+						</a>
+					</li>
+				</ul>
+			</form>
+		</div>
+		<div class="mui-card">
+			<form class="mui-input-group no-border-before no-border-after">
+				<ul class="mui-table-view mui-table-view-chevron color666 store">
+					<li class="mui-table-view-cell">
+						<a class="radio-box">
+							<span>价格类型</span>
+							<div class="mui-row">
+								<div class="mui-input-row mui-radio mui-left height-auto margin-right-15">
+								    <label class="color333">一口价</label>
+								    <input name="sex" v-model="displayData.price_type" type="radio" value="2">
+								</div>
+								<div class="mui-input-row mui-radio mui-left height-auto">
+								    <label class="color333">订金</label>
+								    <input name="sex" type="radio" v-model="displayData.price_type" value="1">
+								</div>
+							</div>
+						</a>
+					</li><li></li>
+				</ul>
+				<div class="mui-input-row">
+					<label>起购数量</label>
+					<input type="number" v-model="displayData.min_number" id="min_number" placeholder="起购数量" >
+				</div>
+				<div class="mui-input-row">
+					<label>上门费</label>
+					<input type="number" v-model="displayData.visiting_fee" id="visiting_fee" placeholder="上门费" >
+				</div>
+				<div class="mui-row" v-for="(item,index) in displayData.sku">
+					<div class="mui-col-sm-11 mui-col-xs-10 border-right">
+						<form class="mui-input-group no-border-before no-border-after">
+							<div class="mui-input-row">
+								<label>型号名称</label>
+								<input type="text" disabled="disabled" v-model="item.name">
+							</div>
+							<div class="mui-input-row">
+								<label>服务价格</label>
+								<input type="number" disabled="disabled"  v-model="item.price">
+							</div>
+						</form>
+					</div>
+					<div class="mui-col-sm-1 mui-col-xs-2 parts-del">
+					</div>
+					<hr class="border" />
+				</div>
+				<ul class="mui-table-view mui-table-view-chevron color666 store">
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate-right" data-href="parts.html" id="parts">
+							<span>配件报价</span>
+						</a>
+					</li><li></li>
+				</ul>
+			</form>
+		</div>
+		<div class="mui-card">
+			<form class="mui-input-group no-border-before no-border-after">
+				<ul class="mui-table-view mui-table-view-chevron color666 store">
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate-right mui-ellipsis-1" data-href="content.html" id="content">
+							<span>购买须知</span>
+						</a>
+					</li>
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate-right mui-ellipsis-1" data-href="introduce.html" id="introduce">
+							<span>服务简介</span>
+						</a>
+					</li>
+				</ul>
+			</form>
+		</div>
+		<div class="mui-content-padded margin-top-20">
+			<button type="button" class="mui-btn mui-btn-royal mui-btn-block buttom-button" id="save" v-show="isNew">
+				<i class="mui-icon mui-icon-checkmarkempty"></i>
+				确认添加
+			</button>
+			<button type="button" class="mui-btn mui-btn-royal mui-btn-block buttom-button" id="save2" v-show="!isNew">
+				<i class="mui-icon mui-icon-checkmarkempty"></i>
+				取消绑定
+			</button>
+		</div>
+	</div>
+<script type="text/javascript" src="../js/mui.min.js"></script>
+<script type="text/javascript" src="../js/vue.min.js" ></script>
+<script type="text/javascript" src="../js/jquery-3.3.1.min.js" ></script>
+<script type="text/javascript" src="../js/app.js" ></script>
+<script type="text/javascript">
+	mui.init();
+	var vm = new Vue({
+		el: '#myapp',
+		data: {
+			isNew: true,
+			displayData: ""
+		}
+	});
+	mui.plusReady(function (){
+		var heard = plus.webview.currentWebview();
+		if(heard.isNew) {
+			$("#head-title").html("添加服务");
+		}
+		$("input").attr("disabled","disabled");
+		vm.isNew = heard.isNew;
+		doAjax("/company/service/info",{
+			_token: UserInfo.data._token,
+			id: heard.serviceId
+		},function (_data) {
+			vm.displayData = _data;
+		},"get")
+			
+		$(".mui-table-view").on("tap","a",function(){
+			var pageUrl = $(this).data("href");
+			var pageId = $(this).attr("id");
+			if(pageId) {
+				openWindow(pageUrl,pageId,{
+					isNew: false,
+					data: vm.displayData,
+					pageSource: "quote-detail"
+				},false)
+			}
+    })
+		$("#save,#save2").on("tap",function() {
+//			console.log(JSON.stringify(requestData));
+			doAjax("/company/service/storeLinkOrUnLink",{_token: UserInfo.data._token,id: vm.displayData.id},function (_data,_msg) {
+				mui.fire(plus.webview.getWebviewById("quote-all-list"), 'get_detail');
+				mui.fire(plus.webview.getWebviewById("quote-list"), 'get_detail');
+				mui.toast(_msg);
+				mui.back();
+			})
+		})
+	})
+</script>
+</body>
+
+</html>

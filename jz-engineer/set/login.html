@@ -1,0 +1,112 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link rel="stylesheet" href="../css/mui.min.css" />
+	<link rel="stylesheet" href="../css/app.css" />
+	<style>
+		#login-form {
+			bottom: 60px;
+		}
+	</style>
+</head>
+
+<body style="background-color: #fff;">
+	<div id="myapp">
+		<div id="login-form">
+			<div class="mui-text-center">
+				<img src="../images/logo.png" width="35%" />
+			</div>
+			<form class="mui-input-group no-border-before no-border-after margin-top-20">
+				<input id='account' v-model="Account" type="text" class="margin-bottom-20" placeholder="输入手机号">
+				<input id='password' v-model="PassWord" type="password" class="margin-bottom-20" placeholder="输入密码">
+			</form>
+			<div class="mui-text-right margin-bottom-50">
+				<a class="purple" id="forget"><small>忘记密码?</small></a>
+			</div>
+			<button class="mui-btn mui-btn-royal mui-btn-block" id="login">登录</button>
+			<div class="mui-text-center margin-top-20">
+				<input type="checkbox" id="isAgree" :checked="checked" id="isAgree" style="position: relative;top: 3px;" />
+				<a href="#" class="font12" id="goProtocol">我已仔细阅读并同意《用户协议》</a>
+			</div>
+		</div>
+	</div>
+<script type="text/javascript" src="../js/mui.min.js"></script>
+<script type="text/javascript" src="../js/vue.min.js" ></script>
+<script type="text/javascript" src="../js/jquery-3.3.1.min.js" ></script>
+<script type="text/javascript" src="../js/app.js" ></script>
+<script type="text/javascript">
+	mui.init();
+	mui.plusReady(function () {
+		var vm = new Vue({
+			el: '#myapp',
+			data: {
+				checked: localStorage.isFirst || false,
+				Account: "",
+				PassWord: ""
+			}
+		})
+		plus.webview.close("tab-main.html");
+		plus.webview.close("tab-me.html");
+		plus.webview.close("tab-message.html");
+		plus.webview.close("index");
+		$(window).resize(function () {
+			if(document.documentElement.clientHeight < 500) {
+				$("#login-form").css("bottom",'-150px');
+			} else {
+				$("#login-form").css("bottom",'60px');
+			}
+		})
+  	var info = plus.push.getClientInfo();
+    $("#login").on("tap",function(){
+    	if(vm.Account == "") {
+    		mui.toast("请输入手机号");
+    		return;
+    	}
+    	if(vm.PassWord == "") {
+    		mui.toast("请输入密码");
+    		return;
+    	}
+    	if(!$("#isAgree").is(":checked")) {
+    		mui.toast("请先阅读并同意用户协议");
+    		return;
+    	}
+    	info = plus.push.getClientInfo();
+    	doAjax("/provider/provider/login",{
+				mobile: vm.Account,
+				password: vm.PassWord,
+				push_cid: info.clientid || ""
+			},
+    	function (_data,_msg) {
+    		UserInfo.saveData(_data);
+    		localStorage.isHaveSignin = "1";
+    		localStorage.isFirst = true;
+    		openWindow("../index.html","index")
+    	})
+    })
+    $("#forget").on("tap",function(){
+    	openWindow("forget.html","forget");
+    })
+    $("#goProtocol").on("tap",function(){
+    	openWindow("protocol.html","protocol");
+    })
+    var canquite = false
+    mui.back = function() {
+    	if(!canquite) {
+    		mui.toast("再按一次退出应用");
+    		canquite = true;
+    		setTimeout(function (){
+    			canquite = false;
+    		},1000)
+    	} else {
+    		plus.runtime.quit();
+    	}
+    	return;
+    }
+  })
+	</script>
+</body>
+
+</html>

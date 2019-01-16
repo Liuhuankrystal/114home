@@ -1,0 +1,116 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link rel="stylesheet" href="../css/mui.min.css" />
+	<link rel="stylesheet" href="../css/app.css" />
+</head>
+
+<body>
+	<header class="mui-bar mui-bar-nav">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"><span class="font14">返回</span></a>
+		<h1 class="mui-title">补差价付款</h1>
+	</header>
+	<div id="myapp" class="mui-content" v-cloak>
+		<div class="mui-card">
+			<form class="mui-input-group no-border-before no-border-after">
+					<div class="mui-input-row">
+						<label>订单编号</label>
+						<p>{{showData.order_number}}</p>
+					</div>
+					<div class="mui-input-row">
+						<label>服务名称</label>
+						<p>{{showData.service_name}}</p>
+					</div>
+					<div class="mui-input-row">
+						<label>订单金额</label>
+						<p>{{showData.dispose}}</p>
+					</div>
+					<div class="mui-input-row">
+						<label>实际服务</label>
+						<p>{{showData.total_amount}}</p>
+					</div>
+					<div class="mui-input-row">
+						<label>应付金额</label>
+						<p>{{showData.need_pay_amount}}</p>
+					</div>
+			</form>
+		</div>
+		<div class="mui-card mui-padding mui-text-center margin-top-20" v-if="displayData.is_onLine_pay">
+			<img :src="showData.img_base64" style="max-width: 100%;width: 100%;"/>
+		</div>
+		<div class="mui-content-padded margin-top-20 margin-bottom-20 compensation mui-text-center" v-if="displayData.is_onLine_pay">
+			<button class="mui-btn mui-btn-outlined buttom-button color999 mui-padding" id="finish2">线下收款</button>
+			<button class="mui-btn mui-btn-danger buttom-button mui-padding" id="check">验证</button>
+		</div>
+		<!--<div class="mui-content-padded margin-top-20 mui-text-center" v-if="displayData.is_onLine_pay">
+			<button class="mui-btn mui-btn-royal mui-btn-block buttom-button" id="check">验证</button>
+		</div>-->
+		<div class="mui-content-padded margin-top-20 mui-text-center" v-if="!displayData.is_onLine_pay">
+			<button class="mui-btn mui-btn-royal mui-btn-block buttom-button" id="finish">线下收款</button>
+		</div>
+	</div>
+<script type="text/javascript" src="../js/mui.min.js"></script>
+<script type="text/javascript" src="../js/vue.min.js" ></script>
+<script type="text/javascript" src="../js/jquery-3.3.1.min.js" ></script>
+<script type="text/javascript" src="../js/app.js" ></script>
+<script type="text/javascript">
+	mui.init();
+	mui.plusReady(function (){
+		var heard = plus.webview.currentWebview();
+		var vm = new Vue({
+			el: '#myapp',
+			data: {
+				price_type: heard.price_type,
+				displayData: heard.data,
+				serviceData: heard.serviceData || [],
+				imageData: "",
+				showData: ""
+			}
+		});
+		mui.fire(plus.webview.getWebviewById("bill-detail"), 'get_detail', {});
+		doAjax("/company/order/createPayOrder",{_token: UserInfo.data._token,order_id: vm.displayData.id},function (_data,_msg,_code) {
+//			console.log(JSON.stringify(vm.displayData))
+			if(_code == "402") vm.displayData.is_onLine_pay = false;
+			vm.showData = _data;
+			vm.showData.dispose = Number(vm.showData.dispose || (vm.showData.total_amount - vm.showData.need_pay_amount)).toFixed(2);
+			vm.showData.total_amount = Number(vm.showData.total_amount).toFixed(2);
+			vm.showData.need_pay_amount = Number(vm.showData.need_pay_amount).toFixed(2);
+		})
+		$("#finish,#finish2").on("tap",function () {
+			mui.confirm('确认已在线下收款？', '提示', ["确认","取消"], function(e) {
+				if(e.index == 0) {
+					doAjax("/company/order/payDetail",{_token: UserInfo.data._token,order_id: vm.displayData.id},function (_data,_msg) {
+						mui.toast(_msg);
+						plus.webview.close("bill-service");
+						plus.webview.close("bill-pay");
+						plus.webview.close("bill-detail");
+						mui.fire(plus.webview.getWebviewById("tab-bill.html"), 'get_detail', {status: 4});
+						openWindow("index.html","index");
+					})
+				}
+			})
+    })
+		$("#check").on("tap",function () {
+			doAjax("/company/order/checkFinish",{_token: UserInfo.data._token,order_id: vm.displayData.id},function (_data,_msg) {
+				mui.toast(_msg);
+				plus.webview.close("bill-service");
+				plus.webview.close("bill-pay");
+				plus.webview.close("bill-detail");
+				mui.fire(plus.webview.getWebviewById("tab-bill.html"), 'get_detail', {status: 4});
+				openWindow("index.html","index");
+			})
+    })
+		mui.back = function() {
+			openWindow("bill-detail.html","bill-detail");
+			mui.fire(plus.webview.getWebviewById("tab-bill.html"), 'get_detail', {status: 4});
+			plus.webview.close("bill-service");
+			plus.webview.close("bill-pay");
+		};
+	})
+</script>
+</body>
+
+</html>

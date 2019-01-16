@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link rel="stylesheet" href="../css/mui.min.css" />
+	<link rel="stylesheet" href="../css/app.css" />
+</head>
+
+<body>
+	<header class="mui-bar mui-bar-nav">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"><span class="font14">返回</span></a>
+		<h1 class="mui-title">服务单位</h1>
+	</header>
+	<div id="myapp" class="mui-content" v-cloak>
+		<div class="mui-card">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell color333" v-for="(item,index) in listData" :data-index="index">
+							{{item.name}}
+							<i class="mui-icon mui-icon-checkmarkempty mui-pull-right bold purple" v-show="item.id == displayData.unit_id"></i>
+					</li>
+				</ul>
+			</div>
+	</div>
+	<div class="mui-content-padded button-fix mui-hidden" style="z-index: 99;">
+		<button type="button" class="mui-btn mui-btn-success mui-btn-block buttom-button" id="save">
+			<i class="mui-icon mui-icon-checkmarkempty"></i>
+			确认
+		</button>
+	</div>
+<script type="text/javascript" src="../js/mui.min.js"></script>
+<script type="text/javascript" src="../js/vue.min.js" ></script>
+<script type="text/javascript" src="../js/jquery-3.3.1.min.js" ></script>
+<script type="text/javascript" src="../js/app.js" ></script>
+<script type="text/javascript">
+	mui.init();
+	mui.plusReady(function (){
+		var heard = plus.webview.currentWebview();
+		if(heard.isNew) {
+			$("#save").parent().removeClass("mui-hidden");
+		}
+		var vm = new Vue({
+			el: '#myapp',
+			data: {
+				listData: [],
+				displayData: heard.data
+			}
+		})
+		doAjax("/company/serviceUnit/list","",function (_data) {
+			vm.listData = _data;
+		},"get")
+		$(".mui-table-view").on("tap","li",function () {
+			var index = $(this).data("index");
+			vm.displayData.unit_id = vm.listData[index].id;
+			vm.displayData.unit_name = vm.listData[index].name;
+		})
+		$("#save").on("tap",function(){
+			mui.fire(plus.webview.getWebviewById(heard.pageSource), 'get_detail', {
+				data: vm.displayData,
+			});
+			mui.back();
+    })
+	})
+</script>
+</body>
+
+</html>

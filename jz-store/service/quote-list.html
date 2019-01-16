@@ -1,0 +1,120 @@
+﻿<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link rel="stylesheet" href="../css/mui.min.css" />
+	<link rel="stylesheet" href="../css/app.css" />
+</head>
+
+<body>
+	<header class="mui-bar mui-bar-nav">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"><span class="font14">返回</span></a>
+		<h1 class="mui-title">服务列表</h1>
+	</header>
+	<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
+		<div class="mui-scroll" id="myapp" v-cloak>
+			<!--数据列表-->
+			<div class="mui-card mui-table-view mui-media mui-padding margin-top-10" v-for="(item,index) in listData" :data-index="index">
+				<img class="mui-media-object mui-pull-left" :src="item.img_url" width="50px" height="50px">
+				<div class="mui-media-body">
+					<h5 class="mui-ellipsis-2 color333 line-height-20">
+						{{item.name}}
+					</h5>
+					<h5 class="mui-ellipsis-2 red line-height-20 font16">
+						<small class="font12">¥</small>{{item.price}}
+						<span class="mui-pull-right color999 font12">销量：{{item.sales}}</span>
+					</h5>
+					<p class="mui-ellipsis-1 font12">
+						{{item.title}}
+					</p>
+				</div>
+			</div>
+		</div>
+		<div class="mui-content-padded button-fix" style="z-index: 99;">
+			<button type="button" class="mui-btn mui-btn-success mui-btn-block buttom-button" id="add">
+				<i class="mui-icon mui-icon-plusempty"></i>
+				添加服务
+			</button>
+		</div>
+	</div>
+<script type="text/javascript" src="../js/mui.min.js"></script>
+<script type="text/javascript" src="../js/vue.min.js" ></script>
+<script type="text/javascript" src="../js/jquery-3.3.1.min.js" ></script>
+<script type="text/javascript" src="../js/app.js" ></script>
+<script type="text/javascript">
+	mui.init({
+		pullRefresh: {
+			container: '#pullrefresh',
+			down: {
+				style: 'circle',
+				callback: pulldownRefresh
+			},
+			up: {
+				auto: true,
+				contentrefresh: '正在加载...',
+				callback: pullupRefresh
+			}
+		}
+	});
+	
+	var count = 0,
+			pageIndex = 0;
+	var vm = new Vue({
+		el:'#myapp',
+		data: {
+			listData: [],
+			
+		}
+	})
+	document.addEventListener('get_detail', function(event) {
+		pageIndex = 1;
+		getList();
+	});
+	function getList() {
+		doAjax("/company/service/list",{
+			_token: UserInfo.data._token,
+			page_num: 15,
+			page: pageIndex,
+			status: ""
+		},function (_data) {
+//			console.log(JSON.stringify(_data));
+			if(_data.length == 0 && pageIndex != 1) {
+				mui.toast("没有更多数据了");
+				return;
+			}
+			if(pageIndex == 1) {
+				vm.listData = _data;
+			} else {
+				vm.listData = vm.listData.concat(_data);
+			}
+		},"get")
+	}
+	function pullupRefresh() {
+		pageIndex++;
+		getList();
+		mui('#pullrefresh').pullRefresh().endPullupToRefresh();
+	}
+	
+	function pulldownRefresh() {
+		pageIndex = 1;
+		getList();
+		mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
+	}
+	mui.plusReady(function() {
+		$("#add").on("tap",function() {
+			openWindow("quote-all-list.html","quote-all-list",null)
+		})
+		mui("#myapp").on("tap",".mui-card",function() {
+			var index = $(this).data("index");
+			vm.listData[index].is_read = false;
+			openWindow("quote-detail.html","quote-detail",{
+				serviceId: vm.listData[index].id
+			})
+		})
+	})
+</script>
+</body>
+
+</html>

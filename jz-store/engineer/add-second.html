@@ -1,0 +1,147 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link rel="stylesheet" href="../css/mui.min.css" />
+	<link rel="stylesheet" href="../css/app.css" />
+</head>
+
+<body>
+	<header class="mui-bar mui-bar-nav">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"><span class="font14">返回</span></a>
+		<h1 class="mui-title">添加人员</h1>
+	</header>
+	<div id="myapp" class="mui-content" v-cloak>
+		<div class="mui-card">
+			<form class="mui-input-group no-border-before no-border-after">
+					<div class="mui-input-row">
+						<label>师傅姓名</label>
+						<p class="mui-text-right color333">{{requestData.name}}</p>
+					</div>
+					<div class="mui-input-row">
+						<label>身份证号</label>
+						<p class="mui-text-right color333">{{requestData.identity_id}}</p>
+					</div>
+					<div class="mui-input-row">
+						<label>登录账号</label>
+						<input type="number" class="mui-text-right" v-model="requestData.mobile" id="mobile" placeholder="登录账号"  maxlength="11">
+					</div>
+			</form>
+		</div>
+		<div class="mui-card">
+			<form class="mui-input-group no-border-before no-border-after">
+				<div class="mui-input-row" v-show="showPassword">
+					<label>登录密码</label>
+					<input type="text" v-model="requestData.password" id="password" placeholder="登录密码">
+				</div>
+				<div class="mui-input-row">
+					<label>联系方式</label>
+					<input type="number" v-model="requestData.tel" id="tel" placeholder="联系方式" maxlength="11">
+				</div>
+				<ul class="mui-table-view mui-table-view-chevron color666 account">
+					<li class="mui-table-view-cell">
+						<a id="addImage" class="mui-navigate-right">
+							<span>人员头像</span>
+							<div v-if="imageData.length > 0" v-if="imageData !== undefined && imageData.length>0">
+								<img :src="imageData[imageData.length - 1].path" width="40px" height="40px" />
+							</div>
+						</a>
+					</li>
+					<li class="mui-table-view-cell">
+						<a class="radio-box">
+							<span>当前状态</span>
+							<div class="mui-row">
+								<div class="mui-input-row mui-radio mui-left height-auto margin-right-15">
+								    <label>有效</label>
+								    <input name="sex" type="radio" v-model="requestData.account_status" value="1">
+								</div>
+								<div class="mui-input-row mui-radio mui-left height-auto">
+								    <label>无效</label>
+								    <input name="sex" type="radio" v-model="requestData.account_status" value="2">
+								</div>
+							</div>
+						</a>
+					</li><li></li>
+				</ul>
+				<div class="mui-input-row height-auto">
+					<label>备注信息</label>
+					<textarea type="text" class="font14" v-model="requestData.remark" maxlength="100" id="remark" placeholder="这里填写备注信息" >
+					</textarea>
+				</div>
+			</form>
+		</div>
+		<div class="mui-content-padded button-fix">
+			<button type="button" class="mui-btn mui-btn-royal mui-btn-block buttom-button" id="save">
+				<i class="mui-icon mui-icon-checkmarkempty"></i>
+					确认添加
+			</button>
+		</div>
+	</div>
+<script type="text/javascript" src="../js/mui.min.js"></script>
+<script type="text/javascript" src="../js/vue.min.js" ></script>
+<script type="text/javascript" src="../js/jquery-3.3.1.min.js" ></script>
+<script type="text/javascript" src="../js/app.js" ></script>
+<script type="text/javascript" src="../js/uploader.js" ></script>
+<script type="text/javascript">
+	mui.init();
+	mui.plusReady(function (){
+		var heard = plus.webview.currentWebview();
+		vm = new Vue({
+			el: '#myapp',
+			data: {
+				showPassword: heard.data.id?false:true,
+				requestData: {
+					name: heard.data.name,
+					identity_id: heard.data.identity_id,
+					mobile: heard.data.mobile,
+					password: "",
+					img_id: "",
+					tel: "",
+					account_status: "1",
+					remark: "",
+					_token: UserInfo.data._token
+				},
+				imageData: []
+			}
+		})
+		$("#addImage").on("tap",function(){
+			showActionSheet();
+		})
+		$("#save").on("tap",function(){
+			if(vm.requestData.mobile == "") {
+				mui.toast("登陆账号未填写");
+				return;
+			}
+			if(vm.showPassword && vm.requestData.password == "" ) {
+				mui.toast("请输入登录密码");
+				return;
+			}
+			if(vm.showPassword && vm.requestData.password.length < 6) {
+				mui.toast("密码至少输入6位");
+				return;
+			}
+			if(vm.requestData.tel == "") {
+				mui.toast("请输入联系方式");
+				return;
+			}
+			if(!telRegex.test(vm.requestData.mobile)) {
+				mui.toast("请输入正确手机号");
+        return;
+			}
+			if(vm.imageData.length > 0) {
+				vm.requestData.img_id = vm.imageData[vm.imageData.length - 1].id;
+			}
+//			console.log(JSON.stringify(vm.requestData))
+			doAjax("/company/providerApply/addTwo",vm.requestData,function(_data,_msg) {
+				mui.toast(_msg);
+				mui.fire(plus.webview.getWebviewById("engineer-list"), 'get_detail');
+				openWindow("engineer-list.html","engineer-list");
+			})
+	  })
+  })
+</script>
+</body>
+
+</html>

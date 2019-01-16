@@ -1,0 +1,138 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <link rel="stylesheet" href="css/mui.min.css"/>
+    <link rel="stylesheet" href="css/app.css" />
+</head>
+<body>
+	<div class="mui-content personal" id="myapp" v-cloak>
+		<h4 class="mui-text-center shopName">我的</h4>
+		<div class="hold">
+			<div class="photo">
+				<img :src="user.img_url" width="80px" height="80px"/>
+			</div>
+		</div>
+		<div class="mui-card personMessage">
+			<div class="mui-card-content mui-text-center">
+				<h4 class="color333">{{user.name}}</h4>
+				<p>{{user.mobile || ""}}</p>
+			</div>
+			<div class="mui-card-footer">
+				<ul class="mui-table-view no-border margin0 mui-grid-view mui-grid-9 margin0 bg-white">
+					<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
+				    <a href="#">
+			        <div class="mui-media-body color999">服务次数</div>
+			        <span class="font20">{{user.service_num}}</span>
+				    </a>
+					</li>
+					<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
+				    <a href="#">
+			        <div class="mui-media-body color999">好评次数</div>
+			        <span class="font20 red">{{user.score_num}}</span>
+				    </a>
+					</li>
+					<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
+				    <a href="#">
+			        <div class="mui-media-body color999">投诉次数</div>
+			        <span class="font20 green">{{user.complain_num}}</span>
+				    </a>
+					</li>
+		    </ul>
+			</div>
+			<div class="mui-card-footer deMargin">
+				<div></div>
+				<div class="mui-input-row mui-pull-right">
+					<div class="mui-switch mui-switch-blue" :class="user.working_status == 2 ? 'mui-active' : ''" @click="change()">
+						<span class="mui-text-right">接单</span>
+						<span class="mui-text-left">休息</span>
+						<div class="mui-switch-handle"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="mui-card">
+			<ul class="mui-table-view mui-table-view-chevron color666 myList">
+				<li class="mui-table-view-cell">
+					<a data-href="account/store-list.html" id="store-list" class="mui-navigate-right">
+						<i class="mui-icon iconfont icon-shangpinguanli purple margin-right-5"></i>
+						合作店铺
+					</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a data-href="account/feedback.html" id="feedback" class="mui-navigate-right">
+						<i class="mui-icon mui-icon-compose purple margin-right-5" style="color: #35f4a0 !important;"></i>
+						意见反馈
+					</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a class="mui-navigate-right" id="phone" :data-phone="user.kf_mobile">
+						<i class="mui-icon mui-icon-phone purple margin-right-5" style="color: #ffd452 !important;"></i>
+						客服电话
+					</a>
+				</li>
+			</ul>
+		</div>
+		<div class="mui-content-padded margin-top-20">
+			<button type="button" class="mui-btn mui-btn-purple mui-btn-block buttom-button" id="login">
+					退出登录
+			</button>
+		</div>
+	</div>
+<script type="text/javascript" src="js/mui.min.js"></script>
+<script type="text/javascript" src="js/vue.min.js" ></script>
+<script type="text/javascript" src="js/jquery-3.3.1.min.js" ></script>
+<script type="text/javascript" src="js/app.js" ></script>
+<script type="text/javascript" charset="utf-8">
+	mui.init();
+	mui.plusReady(function (){
+		var vm = new Vue({
+			el: '#myapp',
+			data: {
+				user: UserInfo.data,
+			},
+			methods: {
+				change: function() {
+					doAjax("/provider/provider/updateWorkingStatus",{_token: UserInfo.data._token},function(_data,_msg) {
+						vm.user.working_status = vm.user.working_status == "1" ? "2" : "1";
+						UserInfo.data.working_status = vm.user.working_status;
+						UserInfo.saveData(UserInfo.data);
+						mui.toast(_msg);
+					});
+				}
+			}
+		})
+		document.addEventListener('get_detail', function(event) {
+			UserInfo.init();
+			vm.user = UserInfo.data;
+		});
+//		console.log(JSON.stringify(UserInfo.data))
+		mui(".myList").on("tap","a",function () {
+			var pageUrl = $(this).data("href");
+			var pageId = $(this).attr("id");
+			if(pageId && pageUrl) {
+				openWindow(pageUrl,pageId,null,false);
+				return;
+			}
+			if(pageId == "phone") {
+				if($(this).data("phone")) {
+					plus.device.dial($(this).data("phone"), true);
+				} else {
+					mui.alert("暂未设置客服电话");
+				}
+			}
+		})
+		$(".photo").on("tap",function () {
+			openWindow("account/account.html","account",null,false)
+		})
+		$("#login").on("tap",function () {
+			UserInfo.saveData("");
+  		localStorage.isHaveSignin = "0";
+			openWindow("set/login.html","login",null,false)
+		})
+	})
+</script>
+</body>
+</html>

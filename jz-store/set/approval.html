@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link rel="stylesheet" href="../css/mui.min.css" />
+	<link rel="stylesheet" href="../css/app.css" />
+</head>
+
+<body>
+	<header class="mui-bar mui-bar-nav">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"><span class="font14">返回</span></a>
+		<h1 class="mui-title">申请结果</h1>
+	</header>
+	<div id="myapp" class="mui-content">
+		<div class="mui-card mui-text-center approval">
+			<h4 class="purple">审核中</h4>
+			<img src="../images/approval.png"/>
+		</div>
+		<p class="margin10 font12 margin0">
+			*您的信息已提交至小白到家客服，客服人员会在3个工作日内进行审核，请接受验证码的手机来电
+			<br />
+			*客服电话：40000116114
+		</p>
+	</div>
+	<script type="text/javascript" src="../js/mui.min.js"></script>
+	<script type="text/javascript" src="../js/vue.min.js" ></script>
+	<script type="text/javascript" src="../js/jquery-3.3.1.min.js" ></script>
+	<script type="text/javascript" src="../js/app.js" ></script>
+	<script type="text/javascript">
+		mui.init();
+		mui.plusReady(function(){
+			mui.back = function() {
+				plus.webview.close("register");
+				openWindow("login.html", "login", null);
+			};
+  })
+	</script>
+</body>
+
+</html>

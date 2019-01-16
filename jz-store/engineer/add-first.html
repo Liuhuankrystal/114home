@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link rel="stylesheet" href="../css/mui.min.css" />
+	<link rel="stylesheet" href="../css/app.css" />
+</head>
+
+<body>
+	<header class="mui-bar mui-bar-nav">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"><span class="font14">返回</span></a>
+		<h1 class="mui-title">添加人员</h1>
+	</header>
+	<div id="myapp" class="mui-content" v-cloak>
+		<div class="mui-card">
+			<form class="mui-input-group no-border-before no-border-after">
+					<div class="mui-input-row">
+						<label>师傅姓名</label>
+						<input type="text" placeholder="姓名" v-model="requestData.name" id="name" >
+					</div>
+					<div class="mui-input-row">
+						<label>身份证号</label>
+						<input type="text" placeholder="号码" v-model="requestData.identity_id" id="identity_id" maxlength="18" >
+					</div>
+			</form>
+		</div>
+	</div>
+	<div class="mui-content-padded button-fix">
+		<button class="mui-btn mui-btn-royal mui-btn-block buttom-button" id="save">
+			<i class="mui-icon mui-icon-checkmarkempty"></i>
+			下一步
+		</button>
+	</div>
+<script type="text/javascript" src="../js/mui.min.js"></script>
+<script type="text/javascript" src="../js/vue.min.js" ></script>
+<script type="text/javascript" src="../js/jquery-3.3.1.min.js" ></script>
+<script type="text/javascript" src="../js/app.js" ></script>
+<script type="text/javascript">
+	mui.init();
+	mui.plusReady(function (){
+		var vm = new Vue({
+			el: '#myapp',
+			data: {
+				requestData: {
+					name: "",
+					identity_id: "",
+					_token: UserInfo.data._token
+				}
+			}
+		})
+		$("#save").on("tap",function(){
+			for(var key in vm.requestData) {
+				if(key !== "imgs" && vm.requestData[key] == "") {
+					mui.toast("请输入" + $("#" + key).attr("placeholder"));
+					return;
+				}
+			}
+			if(vm.requestData.name.length < 2 || !hanzi.test(vm.requestData.name)) {
+				mui.toast("姓名请输入2-10个汉字");
+				return;
+			}
+			if(!idRegex_18.test(vm.requestData.identity_id)) {
+				mui.toast("身份证号不正确");
+        return;
+			}
+			doAjax("/company/providerApply/addOne",vm.requestData,function(_data) {
+	  		openWindow("add-second.html","add-second",{data: _data},true);
+			})
+	  })
+	})
+</script>
+</body>
+
+</html>

@@ -1,0 +1,179 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <link rel="stylesheet" href="css/mui.min.css"/>
+    <link rel="stylesheet" href="css/app.css" />
+</head>
+<body>
+	<div class="mui-content" id="myapp" v-cloak>
+		<h4 class="mui-text-center bg-white shopName">{{userData.store_name}}</h4>
+		<div class="banner">
+			<!--<img src="images/banner.png"/>-->
+			<div id="slider" class="mui-slider" >
+			  <div class="mui-slider-group mui-slider-loop">
+			    <!-- 额外增加的一个节点(循环轮播：第一个节点是最后一张轮播) -->
+			    <div class="mui-slider-item mui-slider-item-duplicate" v-if="bannerData !== undefined && bannerData.length>0">
+			      <a>
+			        <img :src="bannerData[bannerData.length - 1].img_url">
+			      </a>
+			    </div>
+			    <div class="mui-slider-item" v-for="item in bannerData">
+			      <a>
+			        <img :src="item.img_url">
+			      </a>
+			    </div>
+			    <!-- 额外增加的一个节点(循环轮播：最后一个节点是第一张轮播) -->
+			    <div class="mui-slider-item mui-slider-item-duplicate" v-if="bannerData !== undefined && bannerData.length>0">
+			      <a>
+			        <img :src="bannerData[0].img_url">
+			      </a>
+			    </div>
+			  </div>
+			  <div class="mui-slider-indicator">
+			    <div class="mui-indicator" v-for="(item2,index) in bannerData" :class="index == 0 ? 'mui-active' : ''"></div>
+			  </div>
+			</div>
+		</div>
+		<ul class="mui-table-view mui-grid-view mui-grid-9 margin0 margin-bottom-10 billMessage bg-white" id="toBill">
+			<li class="mui-table-view-cell mui-media mui-col-xs-6 mui-col-sm-6">
+		    <a href="#" data-state="4">
+	        <span>{{indexData.assignedNum || '0'}}</span>
+	        <div class="mui-media-body">待指派订单</div>
+		    </a>
+			</li>
+			<li class="mui-table-view-cell mui-media mui-col-xs-6 mui-col-sm-6">
+		    <a href="#" data-state="2">
+	        <span>{{indexData.serviceIngNum || '0'}}</span>
+	        <div class="mui-media-body">服务中</div>
+		    </a>
+			</li>
+			<li class="mui-table-view-cell mui-media mui-col-xs-6 mui-col-sm-6">
+		    <a href="#" data-state="2">
+	        <span>{{indexData.dayValidNum || '0'}}</span>
+	        <div class="mui-media-body">今日有效订单</div>
+		    </a>
+			</li>
+			<li class="mui-table-view-cell mui-media mui-col-xs-6 mui-col-sm-6">
+		    <a href="#">
+	        <span class="purple">{{indexData.dayTurnover || '0.00'}}</span>
+	        <div class="mui-media-body">今日营业额</div>
+		    </a>
+			</li>
+    </ul>
+    <ul class="mui-table-view mui-grid-view mui-grid-9 margin0 menuList bg-white">
+			<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
+		    <a href="#" data-href="service/service-list.html" id="service-list">
+	        <span><img src="images/menu1.png"/></span>
+	        <div class="mui-media-body">服务管理</div>
+		    </a>
+			</li>
+			<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
+		    <a href="#" data-href="message/message-list.html" id="message-list">
+	        <span>
+	        	<img src="images/menu2.png"/>
+	        	<span class="mui-badge mui-badge-red" v-show="indexData.newMsgNum">{{indexData.newMsgNum}}</span>
+	        </span>
+	        <div class="mui-media-body">消息管理</div>
+		    </a>
+			</li>
+			<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
+		    <a href="#">
+	        <span><img src="images/menu3.png"/></span>
+	        <div class="mui-media-body">活动营销</div>
+		    </a>
+			</li>
+			<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
+		    <a href="#">
+	        <span><img src="images/menu4.png"/></span>
+	        <div class="mui-media-body">评论管理</div>
+		    </a>
+			</li>
+			<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
+		    <a href="#">
+	        <span><img src="images/menu5.png"/></span>
+	        <div class="mui-media-body">财务收入</div>
+		    </a>
+			</li>
+			<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
+		    <a href="#" data-href="engineer/engineer-list.html" id="engineer-list">
+	        <span><img src="images/menu6.png"/></span>
+	        <div class="mui-media-body">人员管理</div>
+		    </a>
+			</li>
+    </ul>
+	</div>
+<script type="text/javascript" src="js/mui.min.js"></script>
+<script type="text/javascript" src="js/jquery-3.3.1.min.js" ></script>
+<script type="text/javascript" src="js/vue.min.js" ></script>
+<script type="text/javascript" src="js/app.js" ></script>
+<script type="text/javascript" charset="utf-8">
+	mui.init();
+	var vm = new Vue({
+		el: '#myapp',
+		data: {
+			indexData: "",
+			userData: UserInfo.data,
+			bannerData: []
+		},
+		updated: function() {
+   		var sliderMuiObj = mui(".mui-slider");
+      sliderMuiObj.slider({
+        interval: 3000  
+      });
+   	}
+	})
+	document.addEventListener('get_detail', function(event) {
+		getIndexInfo();
+	});
+	function getIndexInfo() {
+		doAjax("/company/index/realNum",{
+			_token: UserInfo.data._token
+		},function(_data) {
+			vm.indexData = _data;
+		})
+		doAjax("/company/banner/list",{_token: UserInfo.data._token},function(_data) {
+//						console.log("aaa" + JSON.stringify(_data));
+			vm.bannerData = _data.list;
+		},"get")
+	}
+	mui.plusReady(function (){
+		getIndexInfo();
+		mui("#slider").slider({
+			interval: 1000
+		});
+		$("#gologin").on("tap",function () {
+    	openWindow("set/login.html","login")
+    })
+		$("#toBill").on("tap","a" ,function () {
+			var status = $(this).data("state");
+			if(!status) return;
+			mui.fire(plus.webview.getWebviewById("tab-bill.html"), 'get_detail',{
+				status: status
+			});
+			mui.fire(plus.webview.getWebviewById("HBuilder"), 'get_detail');
+			mui.fire(plus.webview.getWebviewById("H57C20B82"), 'get_detail');
+			mui.fire(plus.webview.getWebviewById("index"), 'get_detail');
+			mui.fire(plus.webview.getWebviewById("index.html"), 'get_detail');
+			mui.fire(plus.webview.getWebviewById("io.dcloud.H57C20B82"), 'get_detail');
+		})
+//		console.log(JSON.stringify(UserInfo.data));
+    $(".menuList").on("tap","a",function () {
+    	var pageUrl = $(this).data("href");
+			var pageId = $(this).attr("id");
+			if(pageId) {
+				if(pageId == "service-list" && UserInfo.data.store_type == "2") {
+					openWindow("service/quote-list.html",'quote-list',null);
+					return;
+				}
+				openWindow(pageUrl,pageId,null)
+			} else {
+				openWindow("set/error.html","error",null)
+			}
+    })
+	})
+</script>
+</body>
+</html>

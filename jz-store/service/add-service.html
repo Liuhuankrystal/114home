@@ -1,0 +1,398 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link rel="stylesheet" href="../css/mui.min.css" />
+	<link rel="stylesheet" href="../css/mui.picker.min.css" />
+	<link rel="stylesheet" href="../css/mui.poppicker.css" />
+	<link rel="stylesheet" href="../css/app.css" />
+	<style>
+		#category_name {
+			padding: 10px 0;
+			text-align: left;
+		}
+	</style>
+</head>
+
+<body>
+	<header class="mui-bar mui-bar-nav">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"><span class="font14">返回</span></a>
+		<h1 class="mui-title" id="head-title">服务详情</h1>
+	</header>
+	<div id="myapp" class="mui-content" v-cloak>
+		<div class="mui-card mui-padding" v-show="displayData.audit_status == '-1'">
+			<div class="mui-card-header height-auto padding0 mui-text-left">
+				<h4 class="red margin0">
+					<span class="mui-icon iconfont icon-jinggao mui-pull-left" style="font-size: 26px;margin: -5px 5px 0 0;"></span>审核失败
+				</h4>
+			</div>
+			<div class="mui-card-content margin-top-10">
+				{{displayData.audit_remark}}
+			</div>
+		</div>
+		<div class="mui-card">
+			<ul class="image-list mui-clearfix margin0">
+				<li v-for="item in displayData.imgs">
+					<img :src="item.path || item" />
+				</li>
+				<li v-for="item in displayData.imgs2">
+					<img :src="item.path || item" />
+				</li>
+				<li v-show="isNew">
+					<i class="mui-icon mui-icon-plusempty"></i>
+					<br />
+					<small>上传图片</small>
+				</li>
+			</ul>
+		</div>
+		<div class="mui-card">
+			<form class="mui-input-group no-border-before no-border-after">
+				<ul class="mui-table-view mui-table-view-chevron color666 store" v-if="!isAdd">
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate-right color333"  data-href="type.html" id="type">
+							<span>服务类型</span>
+							{{displayData.type_name}}
+						</a>
+					</li><li></li>
+				</ul>
+				<div class="mui-input-row">
+					<label>服务名称</label>
+					<input type="text" v-model="displayData.name" placeholder="服务名称" >
+				</div>
+				<div class="mui-input-row">
+					<label>副标题名称</label>
+					<input type="text" v-model="displayData.title"  placeholder="副标题名称" >
+				</div>
+				<div class="mui-input-row">
+					<label>起购数量</label>
+					<input type="number" v-model="displayData.min_number" id="min_number" placeholder="起购数量" >
+				</div>
+				<div class="mui-input-row">
+					<label>上门费</label>
+					<input type="number" v-model="displayData.visiting_fee" id="visiting_fee" placeholder="上门费" >
+				</div>
+				<div class="mui-input-row">
+					<label>服务分类</label>
+					<input type="button" id="category_name" :value="displayData.category_name || '选择服务分类'">
+				</div>
+				<ul class="mui-table-view mui-table-view-chevron color666 store">
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate-right color333" data-href="unit.html" id="unit">
+							<span>服务单位</span>
+							{{displayData.unit_name}}
+						</a>
+					</li>
+					<li class="mui-table-view-cell">
+						<a class="radio-box">
+							<span>价格类型</span>
+							<div class="mui-row">
+								<div class="mui-input-row mui-radio mui-left height-auto margin-right-15">
+								    <label class="color333">一口价</label>
+								    <input v-model="displayData.price_type" type="radio" value="2">
+								</div>
+								<div class="mui-input-row mui-radio mui-left height-auto">
+								    <label class="color333">订金</label>
+								    <input type="radio" v-model="displayData.price_type" value="1">
+								</div>
+							</div>
+						</a>
+					</li><li></li>
+				</ul>
+				<div class="mui-input-row" v-if="displayData.price_type == 1">
+					<label>订金</label>
+					<input type="number" v-model="displayData.dispose" id="dispose" placeholder="订金" >
+				</div>
+				<div class="mui-row" v-for="(item,index) in displayData.sku" v-if="displayData.price_type == 2">
+					<div class="mui-col-sm-11 mui-col-xs-10 border-right">
+						<form class="mui-input-group no-border-before no-border-after">
+							<div class="mui-input-row">
+								<label>型号名称</label>
+								<input  type="text" v-model="item.name" :disabled="!isNew">
+							</div>
+							<div class="mui-input-row">
+								<label>服务价格</label>
+								<input type="number" v-model.number="item.price" onkeyup="if(!/^((0{1}\.\d+)|([1-9]\d*\.{1}\d+)|([1-9]+\d*)|0)$/g.test(this.value)){this.value = this.value.slice(0,this.value.length - 1)}" :disabled="!isNew">
+							</div>
+						</form>
+					</div>
+					<div class="mui-col-sm-1 mui-col-xs-2 parts-del" @click="delSku(index)" v-if="isNew">
+						<span class="mui-icon mui-icon-close-filled red"></span>
+						<br />
+						<span class="font12">删除</span>
+					</div>
+					<hr class="border" />
+				</div>
+				<div class="mui-text-center mui-padding" @click="addSku" v-if="displayData.price_type == 2 && isNew">
+					<span class="mui-icon mui-icon-plus-filled purple"></span>
+					添加服务
+				</div>
+			</form>
+		</div>
+		<div class="mui-card">
+			<form class="mui-input-group no-border-before no-border-after">
+				<ul class="mui-table-view mui-table-view-chevron color666 store">
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate-right" data-href="parts.html" id="parts">
+							<span>配件报价</span>
+						</a>
+					</li>
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate-right mui-ellipsis-1" data-href="introduce.html" id="introduce">
+							<span>服务简介</span>
+						</a>
+					</li>
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate-right mui-ellipsis-1" data-href="content.html" id="content">
+							<span>服务内容</span>
+						</a>
+					</li>
+				</ul>
+			</form>
+		</div>
+		<div class="mui-content-padded margin-top-20">
+			<button type="button" class="mui-btn mui-btn-warning mui-btn-block buttom-button" id="save" v-show="isNew && !displayData.audit_status">
+				<i class="mui-icon mui-icon-checkmarkempty"></i>
+				确认添加
+			</button>
+			<button type="button" class="mui-btn mui-btn-success mui-btn-block buttom-button" id="save2" v-show="displayData.audit_status == -1">
+				<i class="mui-icon mui-icon-checkmarkempty"></i>
+				重新提交
+			</button>
+			<button type="button" class="mui-btn mui-btn-success mui-btn-block buttom-button" id="handel2" v-show="displayData.status == -1">
+				<i class="mui-icon mui-icon-checkmarkempty"></i>
+				重新上架
+			</button>
+			<div v-show="isNew">
+				<button type="button" class="mui-btn mui-btn-success mui-btn-block buttom-button" id="saveChange" v-show="displayData.audit_status == 1 || displayData.audit_status == 2">
+					<i class="mui-icon mui-icon-checkmarkempty"></i>
+					完成修改
+				</button>
+			</div>
+			<button type="button" class="mui-btn mui-btn-warning mui-btn-block buttom-button" id="doEdit2" v-show="displayData.audit_status == 1 && !isNew">修改</button>
+		</div>
+		<div class="mui-content-padded compensation mui-text-center margin-top-20" v-show="displayData.audit_status == 2 && !isNew && displayData.status != -1">
+			<button class="mui-btn mui-btn-warning buttom-button" id="doEdit">修改</button>
+			<button class="mui-btn mui-btn-outlined buttom-button color999" id="handel">下架</button>
+		</div>
+	</div>
+<script type="text/javascript" src="../js/mui.min.js"></script>
+<script type="text/javascript" src="../js/vue.min.js" ></script>
+<script type="text/javascript" src="../js/mui.picker.min.js" ></script>
+<script type="text/javascript" src="../js/mui.poppicker.js" ></script>
+<script type="text/javascript" src="../js/jquery-3.3.1.min.js" ></script>
+<script type="text/javascript" src="../js/app.js" ></script>
+<script type="text/javascript">
+	mui.init();
+	var vm = new Vue({
+		el: '#myapp',
+		data: {
+			isNew: false,
+			isAdd: false,
+			displayData: {
+				_token: UserInfo.data._token,
+				name: "",
+				title: "",
+				unit_id: "",
+				unit_name: "",
+				type_id: "",
+				type_name: "",
+				category_id: "",
+				category_name: "",
+				min_number: "",
+				detail: "",
+				content: "",
+				price_type: "",
+				visiting_fee: "",
+				dispose: "",
+				imgs: [],
+				imgs2: [],
+				banner_imgs: [],
+				parts: [],
+				sku: []
+			}
+		},
+		methods: {
+			addSku: function() {
+				var newItem = {
+          name: "",
+          price: ""
+        }
+				this.displayData.sku.push(newItem);
+			},
+			delSku: function(_index) {
+				this.displayData.sku.splice(_index,1);
+			}
+		}
+	});
+	document.addEventListener('get_detail', function(event) {
+		vm.displayData = event.detail.data;
+	});
+	mui.plusReady(function (){
+		var heard = plus.webview.currentWebview();
+		if(heard.isNew) {
+			vm.isAdd = true;
+			$("#head-title").html("添加服务");
+		}
+		if(heard.isNew){
+			vm.isNew = true;
+		}
+		if(!heard.isNew) {
+			$("input").attr("disabled","disabled");
+		}
+		if(heard.data) {
+			vm.displayData = heard.data;
+		} else {
+		if(!heard.isNew) {
+			doAjax("/company/service/info",{
+					_token: UserInfo.data._token,
+					id: heard.serviceId
+				},function (_data) {
+//					console.log(JSON.stringify(_data));
+					vm.displayData = _data;
+					vm.displayData.imgs2 = vm.displayData.banner_imgs;
+					if(!vm.displayData.imgs || vm.displayData.imgs[0] == null) {
+						vm.displayData.imgs = [];
+					}
+				},"get")
+			}
+		}
+		$(".mui-table-view").on("tap","a",function(){
+			var pageUrl = $(this).data("href");
+			var pageId = $(this).attr("id");
+			if(pageId) {
+				openWindow(pageUrl,pageId,{
+					isNew: vm.isNew,
+					data: vm.displayData,
+					pageSource: "add-service"
+				},false)
+			}
+    })
+		$(".mui-icon-plusempty").on("tap",function(){
+			openWindow("images.html","images",{
+					isNew: vm.isNew,
+					data: vm.displayData,
+					pageSource: "add-service"
+				},false)
+    })
+		$("#doEdit,#doEdit2").on("tap",function() {
+			plus.nativeUI.showWaiting();
+			vm.isNew = true;
+			$("input").attr("disabled",false);
+			setTimeout(function() {
+				$('html,body').animate({scrollTop: '0px'}, 800);
+				plus.nativeUI.closeWaiting();
+			},300)
+		})
+		$("#handel,#handel2").on("tap",function() {
+			doAjax("/company/service/handel",{_token: UserInfo.data._token,id: heard.serviceId},function (_data,_msg) {
+				mui.toast(_msg);
+				mui.fire(plus.webview.getWebviewById("service-list"), 'get_detail', {
+					pageIndex: 1,
+					status: 1,
+				});
+				mui.back();
+			})
+		})
+		$("#save,#saveChange,#save2").on("tap",function() {
+			if(this.id == "save2") {
+				plus.nativeUI.showWaiting();
+				mui.toast("请重新编辑服务信息后，再提交");
+				vm.isNew = true;
+				vm.displayData.audit_status = 1;
+				$("input").prop("disabled",false);
+				setTimeout(function() {
+					$('html,body').animate({scrollTop: '0px'}, 800);
+					plus.nativeUI.closeWaiting();
+				},100)
+				return;
+			}
+			if(vm.displayData.price_type == 2) {
+				if(vm.displayData.sku.length == 0) {
+					mui.toast("请至少添加一个服务");
+					return;
+				}
+			} else if(vm.displayData.price_type == 1){
+				if(vm.displayData.dispose == "") {
+					mui.toast("请输入订金");
+					return;
+				}
+			} else {
+				mui.toast("请选择价格类型");
+					return;
+			}
+			var imgs = [],
+					imgs2 = [];
+			for(var i=0;i<vm.displayData.imgs.length;i++) {
+				imgs.push(vm.displayData.imgs[i].url || vm.displayData.imgs[i])
+			}
+			for(var i=0;i<vm.displayData.imgs2.length;i++) {
+				imgs2.push(vm.displayData.imgs2[i].url || vm.displayData.imgs2[i])
+			}
+			vm.displayData.imgs = imgs;
+			vm.displayData.imgs2 = imgs2;
+			var requestData = JSON.parse(JSON.stringify(vm.displayData));
+			requestData.imgs = JSON.stringify(requestData.imgs);
+			requestData.imgs2 = JSON.stringify(requestData.imgs2);
+			var api = "add";
+			if(this.id == "saveChange") {
+				requestData.parts = JSON.stringify(requestData.parts);
+				requestData.sku = JSON.stringify(requestData.sku);
+				api = "edit";
+			}
+			requestData._token = UserInfo.data._token;
+			doAjax("/company/service/" + api,requestData,function (_data,_msg) {
+				mui.toast(_msg);
+				mui.fire(plus.webview.getWebviewById("service-list"), 'get_detail', {
+					pageIndex: 1,
+					status: 2,
+				});
+				mui.back();
+			})
+		})
+		var _getParam = function(obj, param) {
+			return obj[param] || '';
+		};
+		var cityPicker3 ="";
+		doAjax("/company/serviceCategory/list","",function (_data) {
+//			console.log(JSON.stringify(_data))
+			var list = areaData1(_data);
+			cityPicker3 = new mui.PopPicker({
+				layer: 3
+			});
+			cityPicker3.setData(list);
+		},"get")
+		document.getElementById('category_name').addEventListener('tap',function () {
+			cityPicker3.show(function(items) {
+				var count = 2;
+				if(!_getParam(items[count], 'text')) {
+					--count;
+					if(!_getParam(items[count], 'text')) {
+						--count;
+					}
+				}
+				vm.displayData.category_name = _getParam(items[count], 'text');
+				vm.displayData.category_id = _getParam(items[count], 'value');
+			});
+		});
+		function areaData1(_data) {
+			var newData = [];
+			for(var i=0;i<_data.length;i++) {
+				var item = _data[i];
+				item.value = _data[i].id;
+				item.text = _data[i].name;
+				item.children = _data[i].child;
+				delete _data[i].child;
+				if(item.children && item.children.length > 0) {
+					item.children = areaData1(item.children);
+				}
+				newData.push(item);
+			}
+			return newData;
+		}
+	})
+</script>
+</body>
+
+</html>

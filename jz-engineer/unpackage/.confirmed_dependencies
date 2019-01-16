@@ -1,0 +1,49 @@
+{
+  "index.html": {
+    "resources": [
+      "tab-main.html"
+    ],
+    "refer": [
+      "tab-main.html",
+      "tab-bill.html",
+      "tab-me.html",
+      "tab-message.html",
+      "set/login.html"
+    ]
+  },
+  "tab-me.html": {
+    "refer": [
+      "set/login.html",
+      "account/store-list.html",
+      "account/feedback.html"
+    ]
+  },
+  "set/login.html": {
+    "refer": [
+      "index.html",
+      "set/forget.html"
+    ]
+  },
+  "tab-message.html": {
+    "refer": [
+      "message/message-detail.html"
+    ]
+  },
+  "tab-main.html": {
+    "refer": [
+      "bill/bill-detail.html"
+    ]
+  },
+  "bill/bill-detail.html": {
+    "refer": [
+      "bill/baidu.html",
+      "bill/bill-service.html",
+      "bill/bill-pay.html"
+    ]
+  },
+  "bill/bill-service.html": {
+    "refer": [
+      "bill/bill-pay.html"
+    ]
+  }
+}

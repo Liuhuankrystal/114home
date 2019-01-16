@@ -1,0 +1,103 @@
+﻿<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link rel="stylesheet" href="css/mui.min.css" />
+	<link rel="stylesheet" href="css/app.css" />
+</head>
+
+<body>
+	<header class="mui-bar mui-bar-nav">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"><span class="font14">返回</span></a>
+		<h1 class="mui-title">消息</h1>
+	</header>
+	<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
+		<div class="mui-scroll" id="myapp" v-cloak>
+			<!--数据列表-->
+			<div class="mui-card mui-padding" v-for="(item,index) in listData" :data-index="index">
+				<div class="mui-card-header padding0 messageTitle">
+					<span class="font12">
+						<i class="mui-icon iconfont icon-clock purple margin-right-5"></i>
+						{{item.create_time}}
+					</span>
+					<span class="mui-badge mui-badge-purple" v-show="!item.is_read">未读</span>
+				</div>
+				<div class="mui-card-content margin-top-10">
+					<h4 class="color333 bold">{{item.title}}</h4>
+					<p class="font12 mui-ellipsis-2 margin0 color666">{{item.content}}</p>
+				</div>
+			</div>
+			<div class="mui-text-center color333 mui-table-view mui-padding" v-if="listData.length == 0">没有数据</div>
+		</div>
+	</div>
+<script type="text/javascript" src="js/mui.min.js"></script>
+<script type="text/javascript" src="js/vue.min.js" ></script>
+<script type="text/javascript" src="js/jquery-3.3.1.min.js" ></script>
+<script type="text/javascript" src="js/app.js" ></script>
+<script type="text/javascript">
+	mui.init({
+		pullRefresh: {
+			container: '#pullrefresh',
+			down: {
+				style: 'circle',
+				callback: pulldownRefresh
+			},
+			up: {
+				auto: true,
+				contentrefresh: '正在加载...',
+				callback: pullupRefresh
+			}
+		}
+	});
+	
+	var count = 0,
+			pageIndex = 0;
+	var vm = new Vue({
+		el:'#myapp',
+		data: {
+			listData: []
+		}
+	})
+	function getList() {
+		doAjax("/provider/message/list",{_token: UserInfo.data._token,page_num: 15,page: pageIndex},function (_data) {
+			if(_data.length == 0 && pageIndex != 1) {
+				mui.toast("没有更多数据了");
+				return;
+			}
+			if(pageIndex == 1) {
+				vm.listData = _data;
+			} else {
+				vm.listData = vm.listData.concat(_data);
+			}
+		},"get")
+	}
+	document.addEventListener('get_detail', function(event) {
+		pageIndex = 1;
+		getList()
+	});
+	function pullupRefresh() {
+		pageIndex++;
+		getList();
+		mui('#pullrefresh').pullRefresh().endPullupToRefresh();
+	}
+	
+	function pulldownRefresh() {
+		pageIndex = 1;
+		getList();
+		mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
+	}
+	mui.plusReady(function() {
+		mui("#myapp").on("tap",".mui-card",function() {
+			var index = $(this).data("index");
+			vm.listData[index].is_read = true;
+			openWindow("message/message-detail.html","message-detail",{
+				data: vm.listData[index]
+			})
+		})
+	})
+</script>
+</body>
+
+</html>

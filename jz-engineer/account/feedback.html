@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link rel="stylesheet" href="../css/mui.min.css" />
+	<link rel="stylesheet" href="../css/mui.picker.min.css" />
+	<link rel="stylesheet" href="../css/mui.poppicker.css" />
+	<link rel="stylesheet" href="../css/app.css" />
+</head>
+
+<body>
+	<header class="mui-bar mui-bar-nav">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"><span class="font14">返回</span></a>
+		<h1 class="mui-title">意见反馈</h1>
+	</header>
+	<div id="myapp" class="mui-content" v-cloak>
+		<div class="mui-card mui-padding">
+			<textarea id="feedbackInput" v-model="content" @input="count" placeholder="请填写您的宝贵意见" maxlength="500"></textarea>
+			<div class="mui-text-right">{{wordCount}}/500</div>
+		</div>
+		<div class="mui-content-padded button-fix">
+			<button type="button" class="mui-btn mui-btn-warning mui-btn-block buttom-button" id="save">
+				<i class="mui-icon mui-icon-checkmarkempty"></i>
+					提交反馈
+			</button>
+		</div>
+	</div>
+<script type="text/javascript" src="../js/mui.min.js"></script>
+<script type="text/javascript" src="../js/vue.min.js" ></script>
+<script type="text/javascript" src="../js/jquery-3.3.1.min.js" ></script>
+<script type="text/javascript" src="../js/app.js" ></script>
+<script type="text/javascript">
+	mui.init();
+	mui.plusReady(function (){
+		var vm = new Vue({
+			el: '#myapp',
+			data: {
+				content: "",
+				wordCount: 0
+			},
+			methods: {
+				count: function() {
+					this.wordCount = this.content.length;
+				}
+			}
+		})
+		$("#save").on('tap',function () {
+			if(vm.content == "") {
+				mui.toast("请输入反馈意见");
+				return;
+			}
+			doAjax("/provider/feedback/add",{_token: UserInfo.data._token,content: vm.content},function (_data,_msg) {
+				mui.toast(_msg);
+				mui.back();
+			})
+		})
+	})
+</script>
+</body>
+
+</html>

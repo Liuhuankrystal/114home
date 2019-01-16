@@ -1,0 +1,170 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link rel="stylesheet" href="../css/mui.min.css" />
+	<link rel="stylesheet" href="../css/app.css" />
+</head>
+
+<body>
+	<header class="mui-bar mui-bar-nav">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"><span class="font14">返回</span></a>
+		<h1 class="mui-title">工程师详情</h1>
+	</header>
+	<div id="myapp" class="mui-content" v-cloak>
+		<div class="mui-card">
+			<form class="mui-input-group no-border-before no-border-after">
+				<ul class="mui-table-view mui-table-view-chevron color666 account">
+					<li class="mui-table-view-cell">
+						<a id="addImage" class="mui-navigate-right">
+							<span>人员头像</span>
+							<div v-if="imageData.length > 0" v-if="imageData !== undefined && imageData.length>0">
+								<img :src="imageData[imageData.length - 1].path" width="40px" height="40px" />
+							</div>
+						</a>
+					</li><li></li>
+				</ul>
+				<div class="mui-input-row">
+					<label>身份证号</label>
+					<input type="text" v-model="requestData.identity_id" placeholder="身份证号" maxlength="18">
+				</div>
+				<div class="mui-input-row">
+					<label>登录账号</label>
+					<input type="number" v-model="requestData.mobile" placeholder="账号" maxlength="11">
+				</div>
+				<div class="mui-input-row">
+					<label>登录密码</label>
+					<input type="password" v-model="passWord" placeholder="登录密码">
+				</div>
+			</form>
+		</div>
+		<div class="mui-card">
+			<form class="mui-input-group no-border-before no-border-after">
+				<div class="mui-input-row">
+					<label>师傅姓名</label>
+					<input type="text" v-model="requestData.name" placeholder="姓名" maxlength="10">
+				</div>
+				<div class="mui-input-row">
+					<label>联系方式</label>
+					<input type="number" v-model="requestData.tel" placeholder="联系方式" maxlength="11">
+				</div>
+				<ul class="mui-table-view mui-table-view-chevron color666 account">
+					<li class="mui-table-view-cell">
+						<a class="radio-box">
+							<span>当前状态</span>
+							<div class="mui-row">
+								<div class="mui-input-row mui-radio mui-left height-auto margin-right-15">
+								    <label>有效</label>
+								    <input type="radio" v-model="requestData.account_status" value="1">
+								</div>
+								<div class="mui-input-row mui-radio mui-left height-auto">
+								    <label>无效</label>
+								    <input type="radio" v-model="requestData.account_status" value="2">
+								</div>
+							</div>
+						</a>
+					</li><li></li>
+				</ul>
+				<div class="mui-input-row height-auto">
+					<label>备注信息</label>
+					<textarea type="text" class="font14" v-model="requestData.remark" maxlength="100" placeholder="这里填写备注信息" >
+					</textarea>
+				</div>
+			</form>
+		</div>
+		<div class="mui-content-padded button-fix">
+			<button type="button" class="mui-btn mui-btn-royal mui-btn-block buttom-button" id="save">
+				<i class="mui-icon mui-icon-checkmarkempty"></i>
+					重新提交
+			</button>
+		</div>
+	</div>
+<script type="text/javascript" src="../js/mui.min.js"></script>
+<script type="text/javascript" src="../js/vue.min.js" ></script>
+<script type="text/javascript" src="../js/jquery-3.3.1.min.js" ></script>
+<script type="text/javascript" src="../js/app.js" ></script>
+<script type="text/javascript" src="../js/uploader.js" ></script>
+<script type="text/javascript">
+	mui.init();
+	mui.plusReady(function (){
+		var heard = plus.webview.currentWebview();
+		vm = new Vue({
+			el: '#myapp',
+			data: {
+				passWord: "",
+				requestData: "",
+				imageData: []
+			}
+		})
+		doAjax("/company/providerApply/info",{_token: UserInfo.data._token,id: heard.data.id},function(_data) {
+//			console.log(JSON.stringify(_data));
+			vm.requestData = _data;
+			vm.imageData = [{
+				id: vm.requestData.img_id,
+				path: vm.requestData.img_url
+			}]
+		},"get")
+		$("#addImage").on("tap",function(){
+			showActionSheet();
+		})
+		$("#save").on("tap",function(){
+			if(vm.imageData.length == 0) {
+				mui.toast("请上传头像");
+				return;
+			}
+			if(vm.requestData.identity_id == "") {
+				mui.toast("请输入身份证号码");
+				return;
+			}
+			if(vm.requestData.mobile == "") {
+				mui.toast("请输入登陆账号");
+				return;
+			}
+			if(vm.passWord == "" ) {
+				mui.toast("请输入登录密码");
+				return;
+			}
+			if(vm.requestData.name == "") {
+				mui.toast("请输入师傅姓名");
+				return;
+			}
+			if(vm.requestData.tel == "") {
+				mui.toast("请输入联系方式");
+				return;
+			}
+			if(!idRegex_18.test(vm.requestData.identity_id)) {
+				mui.toast("身份证号不正确");
+        return;
+			}
+			if(!telRegex.test(vm.requestData.mobile)) {
+				mui.toast("手机号不正确");
+        return;
+			}
+			if(vm.passWord.length < 6) {
+				mui.toast("密码至少输入6位");
+				return;
+			}
+			if(vm.requestData.name.length < 2 || !hanzi.test(vm.requestData.name)) {
+				mui.toast("姓名请输入2-10个汉字");
+				return;
+			}
+			if(vm.imageData.length > 0) {
+				vm.requestData.img_id = vm.imageData[vm.imageData.length - 1].id;
+			}
+			vm.requestData.password = vm.passWord;
+			
+//			console.log(JSON.stringify(vm.requestData))
+			vm.requestData._token = UserInfo.data._token;
+			doAjax("/company/providerApply/edit",vm.requestData,function(_data,_msg) {
+				mui.toast(_msg);
+				mui.fire(plus.webview.getWebviewById("engineer-list"), 'get_detail');
+				mui.back();
+			})
+	  })
+  })
+</script>
+</body>
+
+</html>

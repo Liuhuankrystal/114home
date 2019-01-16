@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link rel="stylesheet" href="../css/mui.min.css" />
+	<link rel="stylesheet" href="../css/app.css" />
+</head>
+
+<body>
+	<header class="mui-bar mui-bar-nav">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"><span class="font14">返回</span></a>
+		<h1 class="mui-title">资料修改</h1>
+	</header>
+	<div id="myapp" class="mui-content" v-cloak>
+		<div class="mui-card">
+			<form class="mui-input-group no-border-before no-border-after">
+				<ul class="mui-table-view mui-table-view-chevron color666 account">
+					<li class="mui-table-view-cell">
+						<a class="mui-navigate-right">
+							<span>我的头像</span>
+							<div @click="addImage" v-if="imageData !== undefined && imageData.length>0">
+								<img :src="imageData[imageData.length - 1].path || imageData[imageData.length - 1].url || '../images/logo.png'" width="40px" height="40px" />
+							</div>
+						</a>
+					</li>
+					<li class="mui-table-view-cell">
+						<a>
+							<span>真实姓名</span>
+							<input style="padding: 0!important;height: 21px;" type="text" v-model="userData.name" />
+						</a>
+					</li>
+				</ul>
+			</form>
+		</div>
+	</div>
+	<div class="mui-content-padded button-fix">
+		<button type="button" class="mui-btn mui-btn-warning mui-btn-block buttom-button" id="save">
+			<i class="mui-icon mui-icon-checkmarkempty"></i>
+				保存修改
+		</button>
+	</div>
+<script type="text/javascript" src="../js/mui.min.js"></script>
+<script type="text/javascript" src="../js/jquery-3.3.1.min.js" ></script>
+<script type="text/javascript" src="../js/vue.min.js" ></script>
+<script type="text/javascript" src="../js/app.js" ></script>
+<script type="text/javascript" src="../js/uploader.js" ></script>
+<script type="text/javascript">
+	mui.init();
+	mui.plusReady(function (){
+		vm = new Vue({
+			el: '#myapp',
+			data: {
+				userData: "",
+				imageData: []
+			},
+			methods: {
+				addImage: function(){
+		    	showActionSheet();
+		    }
+			}
+		});
+		doAjax("/company/companyAccount/info",{_token: UserInfo.data._token},function(_data) {
+			vm.imageData = [{id: _data.img_id,url: _data.img_url,path: _data.img_url}];
+			vm.userData = _data;
+		},"get");
+		$("#save").on("tap",function(){
+    	doAjax("/company/companyAccount/edit",{
+    		_token: UserInfo.data._token,
+    		name: vm.userData.name,
+    		img_id: vm.imageData[vm.imageData.length - 1].id
+    	},function(_data) {
+    		mui.toast("修改成功");
+    		UserInfo.data.name = vm.userData.name;
+    		UserInfo.data.img_url = vm.imageData[vm.imageData.length - 1].url;
+    		UserInfo.saveData(UserInfo.data);
+    		mui.fire(plus.webview.getWebviewById("tab-me.html"), 'get_detail');
+    		mui.back();
+//  		console.log(JSON.stringify(_data))
+			});
+    })
+})
+</script>
+</body>
+
+</html>

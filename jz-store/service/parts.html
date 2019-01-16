@@ -1,0 +1,139 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link rel="stylesheet" href="../css/mui.min.css" />
+	<link rel="stylesheet" href="../css/app.css" />
+	<style>
+		.new-part {
+			position: fixed;
+			width: calc(100% - 20px);
+			bottom: 0;
+			left: 0;
+			z-index: 999;
+		}
+	</style>
+</head>
+
+<body>
+	<header class="mui-bar mui-bar-nav">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"><span class="font14">返回</span></a>
+		<h1 class="mui-title">配件报价</h1>
+	</header>
+	<div id="myapp" class="mui-content" v-cloak>
+		<div class="mui-row mui-card" v-for="(item,index) in displayData.parts">
+			<div class="mui-col-sm-11 mui-col-xs-10 border-right">
+				<form class="mui-input-group no-border-before no-border-after">
+					<div class="mui-input-row">
+						<label>型号名称</label>
+						<input type="text" v-model="item.name" :disabled="!isNew">
+					</div>
+					<div class="mui-input-row">
+						<label>服务价格</label>
+						<input type="number" v-model="item.price" onkeyup="if(!/^((0{1}\.\d+)|([1-9]\d*\.{1}\d+)|([1-9]+\d*)|0)$/g.test(this.value)){this.value = this.value.slice(0,this.value.length - 1)}" :disabled="!isNew">
+					</div>
+				</form>
+			</div>
+			<div class="mui-col-sm-1 mui-col-xs-2 parts-del" @click="delParts(index)" v-if="isNew">
+				<span class="mui-icon mui-icon-close-filled red"></span>
+				<br />
+				<span class="font12">删除</span>
+			</div>
+			<hr class="border" />
+		</div>
+		<div class="mui-content-padded margin-top-10">
+			<button type="button" class="mui-btn mui-btn-success mui-btn-block buttom-button" @click="addNewPart">
+				<i class="mui-icon mui-icon-plusempty"></i>
+				新建配件
+			</button>
+		</div>
+		<div class="mui-card new-part" v-show="showNewpart">
+			<h5 class="mui-text-center mui-padding color333">
+				新建配件
+				<span class="mui-icon mui-icon-close mui-pull-right font20 bold" style="margin-top: -3px;" @click="close"></span>
+			</h5>
+			<form class="mui-padding">
+				<div class="mui-input-row">
+					<input type="text" class="no-border bg-defalut" v-model="newItem.name" placeholder="填写配件名称" >
+				</div>
+				<div class="mui-input-row">
+					<input type="number" class="no-border bg-defalut" v-model="newItem.price" placeholder="填写配件价格" onkeyup="if(!/^((0{1}\.\d+)|([1-9]\d*\.{1}\d+)|([1-9]+\d*)|0)$/g.test(this.value)){this.value = this.value.slice(0,this.value.length - 1)}">
+				</div>
+			</form>
+			<div class="mui-content-padded mui-text-center">
+				<button type="button" class="mui-btn mui-btn-purple mui-btn-block buttom-button" @click="addParts">
+					<i class="mui-icon mui-icon-checkmarkempty"></i>
+					确定新建
+				</button>
+			</div>
+		</div>
+	</div>
+	<div class="mui-content-padded button-fix">
+		<button type="button" class="mui-btn mui-btn-purple mui-btn-block buttom-button" id="save">
+			<i class="mui-icon mui-icon-checkmarkempty"></i>
+			确认
+		</button>
+	</div>
+<script type="text/javascript" src="../js/mui.min.js"></script>
+<script type="text/javascript" src="../js/vue.min.js" ></script>
+<script type="text/javascript" src="../js/jquery-3.3.1.min.js" ></script>
+<script type="text/javascript" src="../js/app.js" ></script>
+<script type="text/javascript">
+	mui.init();
+	mui.plusReady(function (){
+		var heard = plus.webview.currentWebview();
+		if(heard.isNew) {
+			$("#save").parent().removeClass("mui-hidden");
+		}
+		var vm = new Vue({
+			el: '#myapp',
+			data: {
+				isNew: heard.isNew,
+				displayData: heard.data,
+				newItem: {
+					name: "",
+        	price: ""
+				},
+				showNewpart: false
+			},
+			methods: {
+				addNewPart: function() {
+					this.showNewpart = true;
+				},
+				addParts: function () {
+					var newItem = {
+						name: this.newItem.name,
+          	price: this.newItem.price
+					}
+					this.displayData.parts.push(newItem);
+					this.newItem = {
+						name: "",
+	        	price: ""
+					};
+					this.showNewpart = false;
+				},
+				delParts: function(_index) {
+					this.displayData.parts.splice(_index,1);
+				},
+				close: function(_index) {
+					this.showNewpart = false;
+					this.newItem = {
+						name: "",
+	        	price: ""
+					};
+				}
+			}
+		})
+		$("#save").on("tap",function(){
+    	mui.fire(plus.webview.getWebviewById(heard.pageSource), 'get_detail', {
+				data: vm.displayData,
+			});
+			mui.back();
+    })
+	})
+</script>
+</body>
+
+</html>
