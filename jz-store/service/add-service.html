@@ -140,7 +140,7 @@
 					</li>
 					<li class="mui-table-view-cell">
 						<a class="mui-navigate-right mui-ellipsis-1" data-href="introduce.html" id="introduce">
-							<span>服务简介</span>
+							<span>服务保障</span>
 						</a>
 					</li>
 					<li class="mui-table-view-cell">
@@ -262,8 +262,12 @@
 			var pageUrl = $(this).data("href");
 			var pageId = $(this).attr("id");
 			if(pageId) {
+        var canEdit = vm.isNew;
+        if(pageId == "introduce" && !heard.isNew ) {
+          canEdit = false;
+        }
 				openWindow(pageUrl,pageId,{
-					isNew: vm.isNew,
+					isNew: canEdit,
 					data: vm.displayData,
 					pageSource: "add-service"
 				},false)
@@ -280,6 +284,8 @@
 			plus.nativeUI.showWaiting();
 			vm.isNew = true;
 			$("input").attr("disabled",false);
+      $("#visiting_fee").attr("disabled",true);
+      $("#category_name").attr("disabled",true);
 			setTimeout(function() {
 				$('html,body').animate({scrollTop: '0px'}, 800);
 				plus.nativeUI.closeWaiting();
