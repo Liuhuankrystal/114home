@@ -1,12 +1,12 @@
 {
     "@platforms" : [ "android", "iPhone" ],
-    "id" : "H552A1F18", /*应用的标识，创建应用时自动生成，勿手动修改*/
-    "name" : "114到家-工程师", /*应用名称，程序桌面图标名称*/
+    "id" : "H54BBBDF0", /*应用的标识，创建应用时自动生成，勿手动修改*/
+    "name" : "小百到家-工程师", /*应用名称，程序桌面图标名称*/
     "version" : {
-        "name" : "1.0.1", /*应用版本名称*/
-        "code" : 1
+        "name" : "1.0.0", /*应用版本名称*/
+        "code" : 90
     },
-    "description" : "", /*应用描述信息*/
+    "description" : "家政辅助", /*应用描述信息*/
     "icons" : {
         "72" : "icon.png"
     },
@@ -30,6 +30,9 @@
             "description" : "应用扩展事件"
         },
         "Messaging" : {},
+        "Maps" : {
+            "description" : "管理地图插件"
+        },
         "Speech" : {},
         "Push" : {}
     },
@@ -44,9 +47,9 @@
             "plugins" : {
                 "push" : {
                     "igexin" : {
-                        "appid" : "BbEca3YD5B6OlVaSaqOfu6",
-                        "appkey" : "m8IIydqDuJAldrqafy9VV3",
-                        "appsecret" : "SoY3E3WYw36iZDmO150b37"
+                        "appid" : "xHydisnysh8iFCvWFyNSk1",
+                        "appkey" : "wDDjqH8THdAzPV5c2d1ov7",
+                        "appsecret" : "lQWbNMpDqg9gSSDiossP14"
                     }
                 },
                 "speech" : {
@@ -61,15 +64,18 @@
                 "devices" : "universal", /*iOS应用支持的设备类型，可取值iphone/ipad/universal*/
                 "frameworks" : [],
                 "privacyDescription" : {
-                    "NSPhotoLibraryUsageDescription" : "用于上传头像、服务图片等功能",
-                    "NSPhotoLibraryAddUsageDescription" : "用于保存头像、服务图片等功能",
-                    "NSCameraUsageDescription" : "用于上传头像、服务图片等功能",
-                    "NSMicrophoneUsageDescription" : "用于语音输入等功能",
-                    "NSLocationWhenInUseUsageDescription" : "用于获取当前位置方便规划导航",
-                    "NSLocationAlwaysUsageDescription" : "用于获取当前位置方便规划导航",
-                    "NSLocationAlwaysAndWhenInUseUsageDescription" : "用于获取当前位置方便规划导航",
-                    "NSContactsUsageDescription" : "用于直接拨打电话",
-                    "NSSpeechRecognitionUsageDescription" : "用于语音输入等功能"
+                    "NSPhotoLibraryUsageDescription" : "用于获取照片",
+                    "NSPhotoLibraryAddUsageDescription" : "用于保存照片",
+                    "NSCameraUsageDescription" : "用于拍摄照片",
+                    "NSMicrophoneUsageDescription" : "用于语音输入",
+                    "NSLocationWhenInUseUsageDescription" : "用于获取用户定位",
+                    "NSLocationAlwaysUsageDescription" : "用于获取用户定位",
+                    "NSLocationAlwaysAndWhenInUseUsageDescription" : "用于获取用户定位",
+                    "NSCalendarsUsageDescription" : "用于获取日期",
+                    "NSContactsUsageDescription" : "用于获取通讯录",
+                    "NSBluetoothPeripheralUsageDescription" : "用于蓝牙连接",
+                    "NSSpeechRecognitionUsageDescription" : "用于获取提醒事件",
+                    "NSAppleMusicUsageDescription" : "用于获取媒体"
                 }
             },
             "google" : {
@@ -112,7 +118,7 @@
                     "<uses-permission android:name=\"android.permission.READ_SMS\"/>"
                 ]
             },
-            "orientation" : [ "portrait-primary", "portrait-secondary" ], /*应用支持的方向，portrait-primary：竖屏正方向；portrait-secondary：竖屏反方向；landscape-primary：横屏正方向；landscape-secondary：横屏反方向*/
+            "orientation" : [ "portrait-primary" ], /*应用支持的方向，portrait-primary：竖屏正方向；portrait-secondary：竖屏反方向；landscape-primary：横屏正方向；landscape-secondary：横屏反方向*/
             "icons" : {
                 "ios" : {
                     "prerendered" : true, /*应用图标是否已经高亮处理，在iOS6及以下设备上有效*/
@@ -156,7 +162,7 @@
                         "notification" : "unpackage/res/icons/20x20.png",
                         "notification@2x" : "unpackage/res/icons/40x40.png"
                     },
-                    "appstore" : "unpackage/res/icons/1024x1024.png"
+                    "appstore" : "C:/Users/ZHQ/Desktop/打包/微信图片_20190304121644.png"
                 },
                 "android" : {
                     "mdpi" : "unpackage/res/icons/48x48.png", /*普通屏程序图标，分辨率：48x48*/
@@ -171,11 +177,11 @@
                 "ios" : {
                     "iphone" : {
                         "default" : "", /*iPhone3启动图片选，分辨率：320x480*/
-                        "retina35" : "E:/555/jz/启动页x8png_22/640x960.png", /*3.5英寸设备(iPhone4)启动图片，分辨率：640x960*/
-                        "retina40" : "E:/555/jz/启动页x8png_22/640x1136.png",
-                        "iphonex" : "E:/555/jz/启动页x8png_22/1125x2436.png",
-                        "retina47" : "E:/555/jz/启动页x8png_22/750x1334.png",
-                        "retina55" : "E:/555/jz/启动页x8png_22/1242x2208.png"
+                        "retina35" : "C:/Users/ZHQ/Desktop/打包/启动页x8png/640x960.png", /*3.5英寸设备(iPhone4)启动图片，分辨率：640x960*/
+                        "retina40" : "C:/Users/ZHQ/Desktop/打包/启动页x8png/640x1136.png",
+                        "iphonex" : "C:/Users/ZHQ/Desktop/打包/启动页x8png/1125x2436.png",
+                        "retina47" : "C:/Users/ZHQ/Desktop/打包/启动页x8png/750x1334.png",
+                        "retina55" : "C:/Users/ZHQ/Desktop/打包/启动页x8png/1242x2208.png"
                     },
                     "ipad" : {
                         "portrait" : "", /*iPad竖屏启动图片，分辨率：768x1004*/
@@ -191,12 +197,13 @@
                 "android" : {
                     "mdpi" : "", /*普通屏启动图片，分辨率：240x282*/
                     "ldpi" : "", /*大屏启动图片，分辨率：320x442*/
-                    "hdpi" : "E:/555/jz/启动页x8png_22/480x762.png", /*高分屏启动图片，分辨率：480x762*/
-                    "xhdpi" : "E:/555/jz/启动页x8png_22/720x1242.png", /*720P高分屏启动图片，分辨率：720x1242*/
-                    "xxhdpi" : "E:/555/jz/启动页x8png_22/1080x1882.png"
+                    "hdpi" : "C:/Users/ZHQ/Desktop/打包/启动页x8png/480x762.png", /*高分屏启动图片，分辨率：480x762*/
+                    "xhdpi" : "C:/Users/ZHQ/Desktop/打包/启动页x8png/720x1242.png", /*720P高分屏启动图片，分辨率：720x1242*/
+                    "xxhdpi" : "C:/Users/ZHQ/Desktop/打包/启动页x8png/1080x1882.png"
                 }
             }
-        }
+        },
+        "adid" : "121473290405"
     },
     "dependencies" : {
         "pages" : {
