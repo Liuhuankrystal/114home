@@ -326,7 +326,7 @@
 			<button class="mui-btn mui-btn-purple buttom-button mui-btn-block mui-padding" v-if="displayData.canToProvider && displayData.status != 50" id="change2">分配工程师</button>
 			<button class="mui-btn mui-btn-purple buttom-button mui-btn-block mui-padding" v-if="displayData.canArrive" id="arrive">确认到达</button>
 			<button class="mui-btn mui-btn-purple buttom-button mui-btn-block mui-padding" v-if="displayData.canStartService" id="startService">开始服务</button>
-			<button class="mui-btn mui-btn-purple buttom-button mui-btn-block mui-padding" v-if="(displayData.canPay || displayData.canFinishService) && displayData.status != 10" id="goService">确认订单</button>
+			<button class="mui-btn mui-btn-purple buttom-button mui-btn-block mui-padding" v-if="(displayData.canPay || displayData.canFinishService) && displayData.status != 10" id="goService">确认完成</button>
 			<button class="mui-btn mui-btn-purple buttom-button mui-btn-block mui-padding" v-if="displayData.canPayDetail" id="goService2">去补差价</button>
 			<button class="mui-btn mui-btn-warning buttom-button mui-btn-block mui-padding" v-if="displayData.canPay && displayData.status == 40 && !displayData.is_onLine_pay" id="payDispose">收取订金</button>
 		</div>

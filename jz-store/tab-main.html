@@ -132,6 +132,7 @@
 		doAjax("/company/index/realNum",{
 			_token: UserInfo.data._token
 		},function(_data) {
+//			console.log("aaa" + JSON.stringify(_data));
 			vm.indexData = _data;
 		})
 		doAjax("/company/banner/list",{_token: UserInfo.data._token},function(_data) {
