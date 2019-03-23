@@ -207,277 +207,343 @@
         "adid" : "121473290405"
     },
     "dependencies" : {
-        "pages" : {
-            "index.html" : {
-                "resources" : [ "tab-main.html" ],
-                "refer" : [
-                    "login.html",
-                    "set/login.html",
-                    "bill/compensation.html",
-                    "tab-bill.html",
-                    "tab-account.html",
-                    "tab-me.html"
-                ],
-                "priority" : 0
-            },
-            "login.html" : {
-                "resources" : [],
-                "refer" : [ "register.html" ],
-                "priority" : 0
-            },
-            "set/login.html" : {
-                "resources" : [],
-                "refer" : [
-                    "set/register.html",
-                    "set/forget.html",
-                    "index.html",
-                    "set/protocol.html"
-                ],
-                "priority" : 0
-            },
-            "set/forget.html" : {
-                "resources" : [],
-                "refer" : [ "set/approval.html" ],
-                "priority" : 0
-            },
-            "set/register.html" : {
-                "resources" : [],
-                "refer" : [ "set/approval.html", "set/register.html" ],
-                "priority" : 0
-            },
-            "bill/compensation-pay.html" : {
-                "resources" : [],
-                "refer" : [ "bill/compensation-service.html" ],
-                "priority" : 0
-            },
-            "tab-main.html" : {
-                "resources" : [],
-                "refer" : [
-                    "bill/compensation-pay.html",
-                    "bill/pay.html",
-                    "account/message-list.html",
-                    "engineer/list.html",
-                    "service/list.html",
-                    "message/list.html",
-                    "set/login.html",
-                    "service/service-list.html",
-                    "engineer/engineer-list.html",
-                    "message/message-list.html",
-                    "set/error.html",
-                    "service/quote-list.html"
-                ],
-                "priority" : 0
-            },
-            "tab-bill.html" : {
-                "resources" : [],
-                "refer" : [ "bill/service.html", "bill/detail.html", "bill/bill-detail.html" ],
-                "priority" : 0
-            },
-            "bill/service.html" : {
-                "resources" : [],
-                "refer" : [ "bill/pay.html" ],
-                "priority" : 0
-            },
-            "bill/pay.html" : {
-                "resources" : [],
-                "refer" : [ "bill/engineer.html" ],
-                "priority" : 0
-            },
-            "bill/detail.html" : {
-                "resources" : [],
-                "refer" : [ "bill/engineer.html", "bill/service.html" ],
-                "priority" : 0
-            },
-            "tab-me.html" : {
-                "resources" : [],
-                "refer" : [
-                    "account/store.html",
-                    "account/feedback.html",
-                    "account/account.html",
-                    "set/login.html"
-                ],
-                "priority" : 0
-            },
-            "account/store.html" : {
-                "resources" : [],
-                "refer" : [
-                    "account/address.html",
-                    "account/service-time.html",
-                    "account/bill-time.html",
-                    "account/scope.html"
-                ],
-                "priority" : 0
-            },
-            "account/address.html" : {
-                "resources" : [],
-                "refer" : [ "account/store.html" ],
-                "priority" : 0
-            },
-            "account/service-time.html" : {
-                "resources" : [],
-                "refer" : [ "account/store.html", "account/service-time.html" ],
-                "priority" : 0
-            },
-            "account/bill-time.html" : {
-                "resources" : [],
-                "refer" : [ "account/store.html" ],
-                "priority" : 0
-            },
-            "account/message-list.html" : {
-                "resources" : [],
-                "refer" : [ "account/message-detail.html" ],
-                "priority" : 0
-            },
-            "engineer/list.html" : {
-                "resources" : [],
-                "refer" : [ "engineer/add-first.html" ],
-                "priority" : 0
-            },
-            "engineer/add-first.html" : {
-                "resources" : [],
-                "refer" : [ "engineer/add-second.html" ],
-                "priority" : 0
-            },
-            "service/list.html" : {
-                "resources" : [],
-                "refer" : [ "service/add.html", "service/add-service.html" ],
-                "priority" : 0
-            },
-            "service/add-service.html" : {
-                "resources" : [],
-                "refer" : [
-                    "service/parts.html",
-                    "service/introduce.html",
-                    "service/company.html",
-                    "service/type.html",
-                    "service/images.html",
-                    "service/unit.html",
-                    "service/category.html",
-                    "service/content.html"
-                ],
-                "priority" : 0
-            },
-            "engineer/engineer-list.html" : {
-                "resources" : [],
-                "refer" : [
-                    "engineer/add-first.html",
-                    "engineer/engineer-detail.html",
-                    "engineer/engineer-reapply.html"
-                ],
-                "priority" : 0
-            },
-            "engineer/add-second.html" : {
-                "resources" : [],
-                "refer" : [ "engineer/engineer-list.html" ],
-                "priority" : 0
-            },
-            "service/service-list.html" : {
-                "resources" : [],
-                "refer" : [ "service/add-service.html" ],
-                "priority" : 0
-            },
-            "message/message-list.html" : {
-                "resources" : [],
-                "refer" : [ "message/message-detail.html" ],
-                "priority" : 0
-            },
-            "service/type.html" : {
-                "resources" : [],
-                "refer" : [ "service/add-service.html" ],
-                "priority" : 0
-            },
-            "service/category.html" : {
-                "resources" : [],
-                "refer" : [ "service/add-service.html" ],
-                "priority" : 0
-            },
-            "service/unit.html" : {
-                "resources" : [],
-                "refer" : [ "service/add-service.html" ],
-                "priority" : 0
-            },
-            "service/parts.html" : {
-                "resources" : [],
-                "refer" : [ "service/add-service.html" ],
-                "priority" : 0
-            },
-            "bill/bill-detail.html" : {
-                "resources" : [],
-                "refer" : [
-                    "bill/bill-service.html",
-                    "bill/change-engineer.html",
-                    "bill/bill-pay.html"
-                ],
-                "priority" : 0
-            },
-            "bill/bill-service.html" : {
-                "resources" : [],
-                "refer" : [ "bill/bill-pay.html" ],
-                "priority" : 0
-            },
-            "bill/bill-pay.html" : {
-                "resources" : [],
-                "refer" : [ "bill/bill-code.html" ],
-                "priority" : 0
-            },
-            "service/quote-list.html" : {
-                "resources" : [],
-                "refer" : [
-                    "service/quote-add.html",
-                    "service/add-service.html",
-                    "service/quote-detail.html",
-                    "service/quote-all-list.html"
-                ],
-                "priority" : 0
-            },
-            "account/account.html" : {
-                "resources" : [],
-                "refer" : [ "account/scope.html" ],
-                "priority" : 0
-            },
-            "account/scope.html" : {
-                "resources" : [],
-                "refer" : [ "account/account.html" ],
-                "priority" : 0
-            },
-            "service/quote-detail.html" : {
-                "resources" : [],
-                "refer" : [
-                    "service/type.html",
-                    "service/parts.html",
-                    "service/introduce.html",
-                    "service/content.html"
-                ],
-                "priority" : 0
-            },
-            "service/quote-all-list.html" : {
-                "resources" : [],
-                "refer" : [ "service/quote-detail.html" ],
-                "priority" : 0
-            },
-            "set/protocol.html" : {
-                "resources" : [],
-                "refer" : [ "set/approval.html" ],
-                "priority" : 0
-            },
-            "set/approval.html" : {
-                "resources" : [],
-                "refer" : [ "set/login.html" ],
-                "priority" : 0
-            }
-        },
-        "idle" : {
-            "resources" : [
-                "js/app.js",
-                "js/mui.min.js",
-                "css/app.css",
-                "fonts/mui.ttf",
-                "css/mui.min.css",
-                "js/vue.min.js",
-                "js/mui.js",
-                "css/mui.css"
-            ]
-        }
-    },
+		"pages": {
+			"index.html": {
+				"resources": [
+					"tab-main.html"
+				],
+				"refer": [
+					"login.html",
+					"set/login.html",
+					"bill/compensation.html",
+					"tab-bill.html",
+					"tab-account.html",
+					"tab-me.html"
+				],
+				"priority": 0
+			},
+			"login.html": {
+				"resources": [],
+				"refer": [
+					"register.html"
+				],
+				"priority": 0
+			},
+			"set/login.html": {
+				"resources": [],
+				"refer": [
+					"set/register.html",
+					"set/forget.html",
+					"index.html",
+					"set/protocol.html"
+				],
+				"priority": 0
+			},
+			"set/forget.html": {
+				"resources": [],
+				"refer": [
+					"set/approval.html"
+				],
+				"priority": 0
+			},
+			"set/register.html": {
+				"resources": [],
+				"refer": [
+					"set/approval.html",
+					"set/register.html"
+				],
+				"priority": 0
+			},
+			"bill/compensation-pay.html": {
+				"resources": [],
+				"refer": [
+					"bill/compensation-service.html"
+				],
+				"priority": 0
+			},
+			"tab-main.html": {
+				"resources": [],
+				"refer": [
+					"bill/compensation-pay.html",
+					"bill/pay.html",
+					"account/message-list.html",
+					"engineer/list.html",
+					"service/list.html",
+					"message/list.html",
+					"set/login.html",
+					"service/service-list.html",
+					"engineer/engineer-list.html",
+					"message/message-list.html",
+					"set/error.html",
+					"service/quote-list.html"
+				],
+				"priority": 0
+			},
+			"tab-bill.html": {
+				"resources": [],
+				"refer": [
+					"bill/service.html",
+					"bill/detail.html",
+					"bill/bill-detail.html"
+				],
+				"priority": 0
+			},
+			"bill/service.html": {
+				"resources": [],
+				"refer": [
+					"bill/pay.html"
+				],
+				"priority": 0
+			},
+			"bill/pay.html": {
+				"resources": [],
+				"refer": [
+					"bill/engineer.html"
+				],
+				"priority": 0
+			},
+			"bill/detail.html": {
+				"resources": [],
+				"refer": [
+					"bill/engineer.html",
+					"bill/service.html"
+				],
+				"priority": 0
+			},
+			"tab-me.html": {
+				"resources": [],
+				"refer": [
+					"account/store.html",
+					"account/feedback.html",
+					"account/account.html",
+					"set/login.html"
+				],
+				"priority": 0
+			},
+			"account/store.html": {
+				"resources": [],
+				"refer": [
+					"account/address.html",
+					"account/service-time.html",
+					"account/bill-time.html",
+					"account/scope.html"
+				],
+				"priority": 0
+			},
+			"account/address.html": {
+				"resources": [],
+				"refer": [
+					"account/store.html"
+				],
+				"priority": 0
+			},
+			"account/service-time.html": {
+				"resources": [],
+				"refer": [
+					"account/store.html",
+					"account/service-time.html"
+				],
+				"priority": 0
+			},
+			"account/bill-time.html": {
+				"resources": [],
+				"refer": [
+					"account/store.html"
+				],
+				"priority": 0
+			},
+			"account/message-list.html": {
+				"resources": [],
+				"refer": [
+					"account/message-detail.html"
+				],
+				"priority": 0
+			},
+			"engineer/list.html": {
+				"resources": [],
+				"refer": [
+					"engineer/add-first.html"
+				],
+				"priority": 0
+			},
+			"engineer/add-first.html": {
+				"resources": [],
+				"refer": [
+					"engineer/add-second.html"
+				],
+				"priority": 0
+			},
+			"service/list.html": {
+				"resources": [],
+				"refer": [
+					"service/add.html",
+					"service/add-service.html"
+				],
+				"priority": 0
+			},
+			"service/add-service.html": {
+				"resources": [],
+				"refer": [
+					"service/parts.html",
+					"service/introduce.html",
+					"service/company.html",
+					"service/type.html",
+					"service/images.html",
+					"service/unit.html",
+					"service/category.html",
+					"service/content.html"
+				],
+				"priority": 0
+			},
+			"engineer/engineer-list.html": {
+				"resources": [],
+				"refer": [
+					"engineer/add-first.html",
+					"engineer/engineer-detail.html",
+					"engineer/engineer-reapply.html"
+				],
+				"priority": 0
+			},
+			"engineer/add-second.html": {
+				"resources": [],
+				"refer": [
+					"engineer/engineer-list.html"
+				],
+				"priority": 0
+			},
+			"service/service-list.html": {
+				"resources": [],
+				"refer": [
+					"service/add-service.html"
+				],
+				"priority": 0
+			},
+			"message/message-list.html": {
+				"resources": [],
+				"refer": [
+					"message/message-detail.html"
+				],
+				"priority": 0
+			},
+			"service/type.html": {
+				"resources": [],
+				"refer": [
+					"service/add-service.html"
+				],
+				"priority": 0
+			},
+			"service/category.html": {
+				"resources": [],
+				"refer": [
+					"service/add-service.html"
+				],
+				"priority": 0
+			},
+			"service/unit.html": {
+				"resources": [],
+				"refer": [
+					"service/add-service.html"
+				],
+				"priority": 0
+			},
+			"service/parts.html": {
+				"resources": [],
+				"refer": [
+					"service/add-service.html"
+				],
+				"priority": 0
+			},
+			"bill/bill-detail.html": {
+				"resources": [],
+				"refer": [
+					"bill/bill-service.html",
+					"bill/change-engineer.html",
+					"bill/bill-pay.html"
+				],
+				"priority": 0
+			},
+			"bill/bill-service.html": {
+				"resources": [],
+				"refer": [
+					"bill/bill-pay.html"
+				],
+				"priority": 0
+			},
+			"bill/bill-pay.html": {
+				"resources": [],
+				"refer": [
+					"bill/bill-code.html"
+				],
+				"priority": 0
+			},
+			"service/quote-list.html": {
+				"resources": [],
+				"refer": [
+					"service/quote-add.html",
+					"service/add-service.html",
+					"service/quote-detail.html",
+					"service/quote-all-list.html"
+				],
+				"priority": 0
+			},
+			"account/account.html": {
+				"resources": [],
+				"refer": [
+					"account/scope.html"
+				],
+				"priority": 0
+			},
+			"account/scope.html": {
+				"resources": [],
+				"refer": [
+					"account/account.html"
+				],
+				"priority": 0
+			},
+			"service/quote-detail.html": {
+				"resources": [],
+				"refer": [
+					"service/type.html",
+					"service/parts.html",
+					"service/introduce.html",
+					"service/content.html"
+				],
+				"priority": 0
+			},
+			"service/quote-all-list.html": {
+				"resources": [],
+				"refer": [
+					"service/quote-detail.html"
+				],
+				"priority": 0
+			},
+			"set/protocol.html": {
+				"resources": [],
+				"refer": [
+					"set/approval.html"
+				],
+				"priority": 0
+			},
+			"set/approval.html": {
+				"resources": [],
+				"refer": [
+					"set/login.html"
+				],
+				"priority": 0
+			}
+		},
+		"idle": {
+			"resources": [
+				"js/app.js",
+				"js/mui.min.js",
+				"css/app.css",
+				"fonts/mui.ttf",
+				"css/mui.min.css",
+				"js/vue.min.js",
+				"js/mui.js",
+				"css/mui.css"
+			]
+		}
+	},
     "fullscreen" : false
 }
