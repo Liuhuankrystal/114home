@@ -47,7 +47,7 @@
 					<label>应付金额</label>
 					<p>¥{{showData.need_pay_amount}}</p>
 				</div>
-				<div class="mui-table-view-cell mui-collapse">
+				<div class="mui-table-view-cell mui-collapse"  v-show="showData.detail_list && showData.detail_list.length > 0">
 					<a class="mui-navigate-right" href="#">
 						补差价详情
 					</a>

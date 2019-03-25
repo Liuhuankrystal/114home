@@ -49,8 +49,8 @@
 	<div class="mui-content" id="myapp" style="padding-top: 44px;" v-cloak>
 		<div class="mui-slider mui-fullscreen">
 			<div id="sliderSegmentedControl" class="mui-slider-indicator margin-bottom-10 bg-white mui-segmented-control mui-segmented-control-inverted">
-				<a class="mui-control-item" :class="status == 4?'mui-active':''" data-code="4" >全部</a>
-				<a class="mui-control-item" :class="status == 1?'mui-active':''" data-code="1">待支付</a>
+				<a class="mui-control-item" :class="status == 0?'mui-active':''" data-code="0" >全部</a>
+				<a class="mui-control-item" :class="status == 4?'mui-active':''" data-code="4">待指派</a>
 				<a class="mui-control-item" :class="status == 2?'mui-active':''" data-code="2" >服务中</a>
 				<a class="mui-control-item" :class="status == 3?'mui-active':''" data-code="3" >已完成</a>
 			</div>
@@ -196,7 +196,7 @@
 			_token: UserInfo.data._token,
 			page_num: 15,
 			page: vm.page,
-			status: vm.status
+			status: vm.status || ''
 		},function (_data) {
 //			console.log(JSON.stringify(_data))
 			if(vm.page == 1) {

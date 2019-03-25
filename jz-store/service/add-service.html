@@ -152,7 +152,7 @@
 			</form>
 		</div>
 		<div class="mui-content-padded margin-top-20">
-			<button type="button" class="mui-btn mui-btn-warning mui-btn-block buttom-button" id="save" v-show="isNew && !displayData.audit_status">
+			<button type="button" class="mui-btn mui-btn-warning mui-btn-block buttom-button" id="save" v-show="isNew && !displayData.audit_status && displayData.audit_status != 0">
 				<i class="mui-icon mui-icon-checkmarkempty"></i>
 				确认添加
 			</button>
@@ -165,7 +165,7 @@
 				重新上架
 			</button>
 			<div v-show="isNew">
-				<button type="button" class="mui-btn mui-btn-success mui-btn-block buttom-button" id="saveChange" v-show="displayData.audit_status == 1 || displayData.audit_status == 2">
+				<button type="button" class="mui-btn mui-btn-success mui-btn-block buttom-button" id="saveChange" v-show="displayData.status == 1">
 					<i class="mui-icon mui-icon-checkmarkempty"></i>
 					完成修改
 				</button>
@@ -279,6 +279,7 @@
 		$("#doEdit,#doEdit2").on("tap",function() {
 			plus.nativeUI.showWaiting();
 			vm.isNew = true;
+//			console.log(JSON.stringify(vm.displayData))
 			$("input").attr("disabled",false);
 			setTimeout(function() {
 				$('html,body').animate({scrollTop: '0px'}, 800);
