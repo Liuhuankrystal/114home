@@ -1,6 +1,6 @@
 var timeoutSet = "60000",
 	  canSend = true,
-		pubilcUrl = "https://o2o.114yun.net/sysAdmin/";
+		pubilcUrl = "http://demo.jixinghai.com/xiaobaidaojia/public/index.php";
 
 function openWindow(_url,_id,_data,_isNeedClose) {
 	if(_isNeedClose) {

@@ -206,90 +206,114 @@
         "adid" : "121473290405"
     },
     "dependencies" : {
-        "pages" : {
-            "index.html" : {
-                "resources" : [ "tab-main.html" ],
-                "refer" : [ "tab-bill.html", "tab-me.html", "tab-message.html", "set/login.html" ],
-                "priority" : 0
-            },
-            "tab-me.html" : {
-                "resources" : [],
-                "refer" : [ "set/login.html", "account/store-list.html", "account/feedback.html" ],
-                "priority" : 0
-            },
-            "set/login.html" : {
-                "resources" : [],
-                "refer" : [ "index.html", "set/forget.html" ],
-                "priority" : 0
-            },
-            "tab-message.html" : {
-                "resources" : [],
-                "refer" : [ "message/message-detail.html" ],
-                "priority" : 0
-            },
-            "tab-main.html" : {
-                "resources" : [],
-                "refer" : [ "bill/bill-detail.html" ],
-                "priority" : 0
-            },
-            "bill/bill-detail.html" : {
-                "resources" : [],
-                "refer" : [ "bill/baidu.html", "bill/bill-service.html", "bill/bill-pay.html" ],
-                "priority" : 0
-            },
-            "bill/bill-service.html" : {
-                "resources" : [],
-                "refer" : [ "bill/bill-pay.html" ],
-                "priority" : 0
-            }
-        },
-        "idle" : {
-            "resources" : [
-                "css/base.css",
-                "account/address.html",
-                "js/mui.picker.min.js",
-                "images/menu1.png",
-                "account/store.html",
-                "js/vue.min.js",
-                "images/menu4.png",
-                "images/erro.png",
-                "js/uploader.js",
-                "images/logo.png",
-                "js/mui.min.js",
-                "images/menu6.png",
-                "js/mui.poppicker.js",
-                "bill/change-engineer.html",
-                "images/menu5.png",
-                "fonts/iconfont.ttf",
-                "js/jquery-3.3.1.min.js",
-                "css/mui.poppicker.css",
-                "images/menu2.png",
-                "images/sample.png",
-                "js/mui.js",
-                "css/mui.picker.min.css",
-                "set/register.html",
-                "js/mui.pullToRefresh.js",
-                "bill/bill-code.html",
-                "images/approval.png",
-                "js/app.js",
-                "js/webuploader.min.js",
-                "js/mui.pullToRefresh.material.js",
-                "fonts/mui.ttf",
-                "images/banner.png",
-                "account/bill-time.html",
-                "set/approval.html",
-                "css/mui.css",
-                "js/city.data-3.js",
-                "set/error.html",
-                "account/service-time.html",
-                "css/app.css",
-                "images/menu3.png",
-                "set/protocol.html",
-                "css/mui.min.css",
-                "js/Eleditor.min.js",
-                "account/account.html",
-                "account/scope.html"
-            ]
-        }
-    }
+		"pages": {
+			"index.html": {
+				"resources": [
+					"tab-main.html"
+				],
+				"refer": [
+					"tab-bill.html",
+					"tab-me.html",
+					"tab-message.html",
+					"set/login.html"
+				],
+				"priority": 0
+			},
+			"tab-me.html": {
+				"resources": [],
+				"refer": [
+					"set/login.html",
+					"account/store-list.html",
+					"account/feedback.html"
+				],
+				"priority": 0
+			},
+			"set/login.html": {
+				"resources": [],
+				"refer": [
+					"index.html",
+					"set/forget.html"
+				],
+				"priority": 0
+			},
+			"tab-message.html": {
+				"resources": [],
+				"refer": [
+					"message/message-detail.html"
+				],
+				"priority": 0
+			},
+			"tab-main.html": {
+				"resources": [],
+				"refer": [
+					"bill/bill-detail.html"
+				],
+				"priority": 0
+			},
+			"bill/bill-detail.html": {
+				"resources": [],
+				"refer": [
+					"bill/baidu.html",
+					"bill/bill-service.html",
+					"bill/bill-pay.html"
+				],
+				"priority": 0
+			},
+			"bill/bill-service.html": {
+				"resources": [],
+				"refer": [
+					"bill/bill-pay.html"
+				],
+				"priority": 0
+			}
+		},
+		"idle": {
+			"resources": [
+				"css/base.css",
+				"account/address.html",
+				"js/mui.picker.min.js",
+				"images/menu1.png",
+				"account/store.html",
+				"js/vue.min.js",
+				"images/menu4.png",
+				"images/erro.png",
+				"js/uploader.js",
+				"images/logo.png",
+				"js/mui.min.js",
+				"images/menu6.png",
+				"js/mui.poppicker.js",
+				"bill/change-engineer.html",
+				"images/menu5.png",
+				"fonts/iconfont.ttf",
+				"js/jquery-3.3.1.min.js",
+				"css/mui.poppicker.css",
+				"images/menu2.png",
+				"images/sample.png",
+				"js/mui.js",
+				"css/mui.picker.min.css",
+				"set/register.html",
+				"js/mui.pullToRefresh.js",
+				"bill/bill-code.html",
+				"images/approval.png",
+				"js/app.js",
+				"js/webuploader.min.js",
+				"js/mui.pullToRefresh.material.js",
+				"fonts/mui.ttf",
+				"images/banner.png",
+				"account/bill-time.html",
+				"set/approval.html",
+				"css/mui.css",
+				"js/city.data-3.js",
+				"set/error.html",
+				"account/service-time.html",
+				"css/app.css",
+				"images/menu3.png",
+				"set/protocol.html",
+				"css/mui.min.css",
+				"js/Eleditor.min.js",
+				"account/account.html",
+				"account/scope.html"
+			]
+		}
+	}
 }
