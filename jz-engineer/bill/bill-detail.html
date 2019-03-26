@@ -167,6 +167,15 @@
 				opacity: 0;
 			}
 		}
+		.service-label {
+			font-size: 12px;
+			line-height: 1;
+			display: inline-block;
+			padding: 3px 6px;
+			color: #fff;
+			border-radius: 100px;
+			background-color: #007aff;
+		}
 	</style>
 </head>
 
@@ -270,6 +279,20 @@
 					<span class="red font16">
 						¥{{displayData.amount}}
 					</span>
+				</div>
+				<div class="mui-table-view-cell mui-collapse" style="padding: 11px 0;" v-show="displayData.detail_list && displayData.detail_list.length > 0">
+					<a class="mui-navigate-right" href="#" style="margin: -11px 0;">
+						补差价详情
+					</a>
+					<ul class="mui-table-view mui-table-view-chevron">
+						<li class="mui-table-view-cell" v-for="item in displayData.detail_list">
+								<span class="service-label">
+									{{item.is_parts == '1' ? '配件' : '服务'}}
+								</span>
+								{{item.name}}
+								<span class="mui-pull-right">¥{{item.price}}</span>
+						</li>
+					</ul>
 				</div>
 			</div>
 		</div>

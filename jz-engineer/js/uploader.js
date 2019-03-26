@@ -44,13 +44,13 @@ function compressImage(_flies, file_index) {
     plus.nativeUI.showWaiting("压缩中...");
     plus.zip.compressImage({
       src: localurl,
-      dst: localurl,
+      dst: "./img/aa.jpg",
       overwrite: true,
       quality: 20
     },
 	function (event) {
     var fileInfo = {
-        "FilePath": localurl,//压缩后路径
+        "FilePath": "./img/aa.jpg",//压缩后路径
         "FileCategory": "",
     }
     fileData.push(fileInfo);
