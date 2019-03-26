@@ -18,7 +18,7 @@
 		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"><span class="font14">返回</span></a>
 		<h1 class="mui-title">补差价服务</h1>
 	</header>
-	<div id="myapp" class="mui-content" v-cloak>
+	<div id="myapp" class="mui-content">
 		<div class="mui-card" v-for="(item,index) in serviceData">
 			<div class="mui-row">
 				<div class="mui-col-sm-11 mui-col-xs-10 border-right">
@@ -77,7 +77,7 @@
 					var newItem = {
 						name: "",
 						price: "",
-						is_parts: 1
+						is_parts: 0
 					};
 					this.serviceData.push(newItem);
 				},
