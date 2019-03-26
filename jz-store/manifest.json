@@ -48,8 +48,8 @@
                 "push" : {
                     "igexin" : {
                         "appid" : "NDgaeaekpX6beMGo1tsTU1",
-                        "appkey" : "nufCRfNaSN8iDoBKVo4ZG9",
-                        "appsecret" : "9kTiPeB8iH8J1TCwzgN5B9"
+                        "appkey" : "9kTiPeB8iH8J1TCwzgN5B9",
+                        "appsecret" : "nufCRfNaSN8iDoBKVo4ZG9"
                     }
                 },
                 "speech" : {
