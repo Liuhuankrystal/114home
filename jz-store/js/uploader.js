@@ -51,13 +51,13 @@ function compressImage(_flies, file_index) {
 	plus.nativeUI.showWaiting("压缩中...");
 	plus.zip.compressImage({
 			src: localurl,
-			dst: localurl,
+			dst: "./img/aa.jpg",
 			overwrite: true,
 			quality: 20
 		},
 		function(event) {
 			var fileInfo = {
-				"FilePath": localurl, //压缩后路径
+				"FilePath": "./img/aa.jpg", //压缩后路径
 				"FileCategory": "",
 			}
 			fileData.push(fileInfo);
@@ -81,6 +81,7 @@ function compressImage(_flies, file_index) {
 }
 //上传图片
 function uploadeImage(_fileList) {
+//	console.log(JSON.stringify(_fileList))
 	plus.nativeUI.closeWaiting();
 	plus.nativeUI.showWaiting("上传中...");
 	var task = plus.uploader.createUpload(pubilcUrl + "/file/upload-img", {
@@ -88,7 +89,7 @@ function uploadeImage(_fileList) {
 	}, function(result) { //上传完成
 		plus.nativeUI.closeWaiting();
 		var resultData = JSON.parse(result.responseText);
-		//  		console.log("上传完成" + JSON.stringify(resultData));
+//		  		console.log("上传完成" + JSON.stringify(resultData));
 		if(result.state == "4" && result.responseText != "") {
 			clearTimeout();
 			if(resultData.status == "1") {

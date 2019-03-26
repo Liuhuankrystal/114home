@@ -152,7 +152,7 @@
 			</form>
 		</div>
 		<div class="mui-content-padded margin-top-20">
-			<button type="button" class="mui-btn mui-btn-warning mui-btn-block buttom-button" id="save" v-show="isNew && !displayData.audit_status">
+			<button type="button" class="mui-btn mui-btn-warning mui-btn-block buttom-button" id="save" v-show="isNew && !displayData.audit_status && displayData.audit_status != 0">
 				<i class="mui-icon mui-icon-checkmarkempty"></i>
 				确认添加
 			</button>
@@ -165,14 +165,14 @@
 				重新上架
 			</button>
 			<div v-show="isNew">
-				<button type="button" class="mui-btn mui-btn-success mui-btn-block buttom-button" id="saveChange" v-show="displayData.audit_status == 1 || displayData.audit_status == 2">
+				<button type="button" class="mui-btn mui-btn-success mui-btn-block buttom-button" id="saveChange" v-show="displayData.status == 1">
 					<i class="mui-icon mui-icon-checkmarkempty"></i>
 					完成修改
 				</button>
 			</div>
 			<button type="button" class="mui-btn mui-btn-warning mui-btn-block buttom-button" id="doEdit2" v-show="displayData.audit_status == 1 && !isNew">修改</button>
 		</div>
-		<div class="mui-content-padded compensation mui-text-center margin-top-20" v-show="displayData.audit_status == 2 && !isNew && displayData.status != -1">
+		<div class="mui-content-padded compensation mui-text-center margin-top-20" v-show="(displayData.audit_status == 0 || displayData.audit_status == 2) && !isNew && displayData.status != -1">
 			<button class="mui-btn mui-btn-warning buttom-button" id="doEdit">修改</button>
 			<button class="mui-btn mui-btn-outlined buttom-button color999" id="handel">下架</button>
 		</div>
@@ -262,11 +262,10 @@
 			var pageUrl = $(this).data("href");
 			var pageId = $(this).attr("id");
 			if(pageId) {
-        var canEdit = vm.isNew;
+				var canEdit = vm.isNew;
         if(pageId == "introduce" && !heard.isNew ) {
           canEdit = false;
-        }
-				openWindow(pageUrl,pageId,{
+        }				openWindow(pageUrl,pageId,{
 					isNew: canEdit,
 					data: vm.displayData,
 					pageSource: "add-service"
@@ -283,10 +282,10 @@
 		$("#doEdit,#doEdit2").on("tap",function() {
 			plus.nativeUI.showWaiting();
 			vm.isNew = true;
+//			console.log(JSON.stringify(vm.displayData))
 			$("input").attr("disabled",false);
-      $("#visiting_fee").attr("disabled",true);
-      $("#category_name").attr("disabled",true);
-			setTimeout(function() {
+$("#visiting_fee").attr("disabled",true);
+      $("#category_name").attr("disabled",true);			setTimeout(function() {
 				$('html,body').animate({scrollTop: '0px'}, 800);
 				plus.nativeUI.closeWaiting();
 			},300)

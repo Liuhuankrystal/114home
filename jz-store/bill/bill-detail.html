@@ -164,6 +164,15 @@
 				opacity: 0;
 			}
 		}
+		.service-label {
+			font-size: 12px;
+			line-height: 1;
+			display: inline-block;
+			padding: 3px 6px;
+			color: #fff;
+			border-radius: 100px;
+			background-color: #007aff;
+		}
 	</style>
 </head>
 
@@ -262,6 +271,20 @@
 					¥{{price_type == 1 ? Number(displayData.dispose).toFixed(2) : (displayData.unit_price * displayData.count).toFixed(2)}}
 				</span>
 			</div>
+			<div class="mui-table-view-cell mui-collapse" style="padding: 11px 0;" v-show="displayData.detail_list && displayData.detail_list.length > 0">
+					<a class="mui-navigate-right" href="#" style="margin: -11px 0;">
+						补差价详情
+					</a>
+					<ul class="mui-table-view mui-table-view-chevron">
+						<li class="mui-table-view-cell" v-for="item in displayData.detail_list">
+								<span class="service-label">
+									{{item.is_parts == '1' ? '配件' : '服务'}}
+								</span>
+								{{item.name}}
+								<span class="mui-pull-right">¥{{item.price}}</span>
+						</li>
+					</ul>
+				</div>
 			<div class="mui-card-footer padding0">
 				<span class="color999">
 					服务金额(总价)
@@ -326,7 +349,7 @@
 			<button class="mui-btn mui-btn-purple buttom-button mui-btn-block mui-padding" v-if="displayData.canToProvider && displayData.status != 50" id="change2">分配工程师</button>
 			<button class="mui-btn mui-btn-purple buttom-button mui-btn-block mui-padding" v-if="displayData.canArrive" id="arrive">确认到达</button>
 			<button class="mui-btn mui-btn-purple buttom-button mui-btn-block mui-padding" v-if="displayData.canStartService" id="startService">开始服务</button>
-			<button class="mui-btn mui-btn-purple buttom-button mui-btn-block mui-padding" v-if="(displayData.canPay || displayData.canFinishService) && displayData.status != 10" id="goService">确认订单</button>
+			<button class="mui-btn mui-btn-purple buttom-button mui-btn-block mui-padding" v-if="(displayData.canPay || displayData.canFinishService) && displayData.status != 10" id="goService">确认完成</button>
 			<button class="mui-btn mui-btn-purple buttom-button mui-btn-block mui-padding" v-if="displayData.canPayDetail" id="goService2">去补差价</button>
 			<button class="mui-btn mui-btn-warning buttom-button mui-btn-block mui-padding" v-if="displayData.canPay && displayData.status == 40 && !displayData.is_onLine_pay" id="payDispose">收取订金</button>
 		</div>
