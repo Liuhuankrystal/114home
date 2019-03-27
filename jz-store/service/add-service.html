@@ -87,7 +87,7 @@
 					<li class="mui-table-view-cell">
 						<a class="radio-box">
 							<span>价格类型</span>
-							<div class="mui-row">
+							<div class="mui-row" id="price_type">
 								<div class="mui-input-row mui-radio mui-left height-auto margin-right-15">
 								    <label class="color333">一口价</label>
 								    <input v-model="displayData.price_type" type="radio" value="2">
@@ -284,8 +284,10 @@
 			vm.isNew = true;
 //			console.log(JSON.stringify(vm.displayData))
 			$("input").attr("disabled",false);
-$("#visiting_fee").attr("disabled",true);
-      $("#category_name").attr("disabled",true);			setTimeout(function() {
+      $("#visiting_fee").attr("disabled",true);
+      $("#category_name").attr("disabled",true);			
+      $("#price_type input").attr("disabled",true);			
+      setTimeout(function() {
 				$('html,body').animate({scrollTop: '0px'}, 800);
 				plus.nativeUI.closeWaiting();
 			},300)
