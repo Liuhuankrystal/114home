@@ -674,3 +674,23 @@ textarea {
 .mui-switch .mui-switch-handle {
 	box-shadow: none;
 }
+
+/*authentication*/
+    
+.authentication.mui-card {
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.08);
+}
+.authentication .mui-media-body {
+    padding: 15px 0 0 35px;
+    color: #333;
+    font-size: 18px;
+    font-weight: bold;
+}
+.authentication .mui-media-body p {
+    margin: 5px 0 0 0;
+    font-size: 12px;
+    font-weight: normal;
+    color: #999;
+}
