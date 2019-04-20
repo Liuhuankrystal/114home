@@ -787,3 +787,160 @@ textarea {
   margin-right: 10px;
   color: #666;
 }
+
+/*finance*/
+.mui-bar {
+  background-color: #fff;
+}
+
+.finance-show {
+  margin: 10px 0;
+  padding: 20px;
+  border-radius: 4px;
+  color: #fff;
+  background: linear-gradient(to right, #7776FD , #9292FF);
+}
+.fiance-tilte {
+  font-size: 12px;
+  color: #fff;
+}
+.fiance-total {
+  display: flex;
+  justify-content: space-between;
+  flex-flow: wrap;
+  margin-bottom: 20px;
+}
+.fiance-total>div,
+.fiance-money-text {
+  color: #fff;
+  font-size: 13px;
+}
+.fiance-total>div>span {
+  color: #fff;
+  font-size: 32px;
+  font-weight: bold;
+}
+.fiance-total>div>button {
+  width: 66px;
+  height: 30px;
+  padding: 0;
+  margin: 0;
+  font-size: 12px;
+  line-height: 30px;
+  text-align: center;
+  color: #fff;
+  border: 0;
+  border-radius: 15px;
+  background-color: #FF5252;
+}
+.fiance-money {
+  display: flex;
+  justify-content: space-between;
+  flex-flow: wrap;
+}
+.fiance-money>div {
+  width: 50%;
+}
+.fiance-money .fiance-tilte {
+  margin-bottom: 5px;
+}
+.fiance-money-text>span {
+  font-size: 20px;
+  font-weight: bold;
+}
+.finance-detail {
+  padding: 10px;
+  background-color: #fff;
+}
+.finance-tab {
+  padding: 10px 0 0 0;
+  margin: 0 auto;
+  width: 50%;
+  display: flex;
+  justify-content: space-around;
+}
+.finance-tab-item {
+  position: relative;
+  padding-bottom: 12px;
+  font-size: 15px;
+  color: #333;
+}
+.finance-tab-item::after {
+  content: ' ';
+  height: 3px;
+  width: 50%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  background-color: #fff;
+}
+.finance-tab-item.active {
+  color: #7776FD;
+}
+.finance-tab-item.active::after {
+  background-color: #7776FD;
+}
+.entry-list,
+.cash-out-list {
+  margin: 0;
+  border-top: 1px solid #F0F0F0;
+}
+.entry-list>li,
+.cash-out-list>li {
+  padding: 10px 0;
+  border-bottom: 1px solid #F0F0F0;
+}
+.entry-list-flex,
+.cash-out-list-flex {
+  display: flex;
+  justify-content: space-between;
+}
+.cash-out-list-flex>span {
+  align-items: center;
+  line-height: 45px;
+}
+
+.cash-out-account {
+  margin-top: 10px;
+  padding: 25px;
+  color: #fff;
+  background: linear-gradient(to right,#005BAC ,#2E8DE2);
+  border-radius: 4px;
+}
+.cash-out-account>div {
+  color: #fff;
+  font-size: 14px;
+}
+.cash-out-total {
+  padding: 10px;
+  font-size: 15px;
+  color: #999;
+  margin: 0;
+}
+.cash-out-total span {
+  margin-right: 5px;
+  font-weight: bold;
+  color: #FF5252;
+}
+.cash-out-money {
+  background-color: #fff;
+  padding: 15px 10px;
+  border-radius: 4px;
+}
+.cash-out-money label {
+  width: 70px;
+  font-size: 15px;
+  color: #333;
+}
+.cash-out-money input {
+  float: right;
+  padding: 0;
+  margin: 0;
+  height: 18px;
+  width: calc(100% - 80px);
+  border: 0;
+  color: #666;
+  font-size: 14px;
+}

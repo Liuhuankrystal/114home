@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link rel="stylesheet" href="../css/mui.min.css" />
+	<link rel="stylesheet" href="../css/app.css" />
+  <style type="text/css">
+    .mui-content {
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+  </style>
+</head>
+
+<body>
+	<header class="mui-bar mui-bar-nav">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"><span class="font14">返回</span></a>
+		<h1 class="mui-title">提现</h1>
+	</header>
+	<div id="myapp" class="mui-content" v-cloak>
+    <div class="cash-out-account">
+      提款账户信息
+      <div>mayun@zhifubao.com</div>
+    </div>
+    <p class="cash-out-total">
+      <span class="red">123456.00元</span>当前可提现金额
+    </p>
+    <div class="cash-out-money">
+    	<label>提现金额</label>
+      <input type="text" placeholder="请输入体现金额" />
+    </div>
+    <button type="button" class="mui-btn mui-btn-red mui-btn-block buttom-button margin-top-20">
+    	<i class="mui-icon mui-icon-checkmarkempty"></i>
+    	确认提现
+    </button>
+	</div>
+<script type="text/javascript" src="../js/mui.min.js"></script>
+<script type="text/javascript" src="../js/vue.min.js"></script>
+<script type="text/javascript" src="../js/jquery-3.3.1.min.js" ></script>
+<script type="text/javascript" src="../js/app.js" ></script>
+<script type="text/javascript">
+	mui.init();
+  var vm = new Vue({
+  	el: '#myapp',
+  	data: {
+  		type: "out",
+  	},
+    methods: {
+    }
+  })
+	mui.plusReady(function (){
+    
+  })
+</script>
+</body>
+
+</html>
