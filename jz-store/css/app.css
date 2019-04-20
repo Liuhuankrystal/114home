@@ -203,6 +203,10 @@ textarea {
 .icon-wenzi:before { content: "\e63f"; }
 .icon-xiangji:before { content: "\e640"; }
 .icon-logout:before { content: "\e64b"; }
+.icon-xinxi:before { content: "\e763";}
+.icon-location2:before { content: "\e620";}
+.icon-dianhua:before { content: "\e60f";}
+.icon-star:before { content: "\e671";}
 /*icon: 	end;*/
 
 /*login.html			start*/
@@ -693,4 +697,93 @@ textarea {
     font-size: 12px;
     font-weight: normal;
     color: #999;
+}
+
+/*comment*/
+.comment-list {
+  padding: 10px 15px 5px;
+  background-color: #fff;
+}
+.comment-list img {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+  border-radius: 50%;
+}
+.comment-title,
+.comment-label {
+  display: flex;
+  justify-content: space-between;
+  flex-flow: nowrap;
+  margin-bottom: 5px;
+}
+.comment-title span {
+  width: 50%;
+  flex-grow: 0;
+  line-height: 16px;
+  word-break: break-all;
+}
+.comment-list .mui-media-body {
+  width: calc(100% - 40px);
+  float: right;
+}
+.comment-list .mui-ellipsis-2 {
+  font-size: 13px;
+  margin-bottom: 2px;
+}
+.stars-color {
+  color: #FF9000;
+}
+
+
+/*comment-detail*/
+.comment-count {
+  padding: 10px 15px;
+  color: #333;
+  background-color: #fff;
+}
+.comment-service {
+  margin: 10px auto;
+  padding: 10px 15px;
+  background-color: #fff;
+}
+.comment-service img {
+  float: left;
+  width: 80px;
+  height: 80px;
+  margin-right: 20px;
+}
+.comment-service>div,
+.comment-service>div>p {
+  padding: 15px 0 0;
+}
+.comment-detail {
+  border-bottom: 1px solid #F0F0F0;
+}
+.comment-detail>div {
+  display: flex;
+  padding-top: 5px;
+  justify-content: space-between;
+}
+.comment-detail>div>div img {
+  float: left;
+  width: 30px;
+  height: 30px;
+  margin: -5px 8px 0 0;
+  border-radius: 50%;
+}
+.comment-detail>p {
+  margin: 10px 0;
+  font-size: 14px;
+  line-height: 20px;
+  color: #333;
+}
+.comment-stars {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 10px;
+}
+.comment-stars span {
+  margin-right: 10px;
+  color: #666;
 }
